@@ -64,7 +64,7 @@ const DEFAULT_DATA = {
       tag: 'ปีการศึกษา 2569',
       tag_en: 'Academic Year 2026',
       bg: 'ni-1',
-      image: 'https://scontent.fbkk22-3.fna.fbcdn.net/v/t39.30808-6/734756135_1583527623776571_4385148632615010203_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x2048&ctp=s1448x2048&_nc_cat=109&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=qjN5nfiHgWEQ7kNvwH_NC1y&_nc_oc=AdoWco_vE8MkzphZFr94jtUj5-1gKN5gj2QLSHPQTdGzt_V1bMTdv8va_4EYsEWCR7EmGbFM2Qw6A60gDgHE94qs&_nc_zt=23&_nc_ht=scontent.fbkk22-3.fna&_nc_gid=McnhVzfQb5BPM8odqo8MHA&_nc_ss=7b2a8&oh=00_AQBDFCUj4FfKCGek1geATnEXIzmy3C-VM8SIB6P3ne-mLA&oe=6A52B2C4',
+      image: 'assets/img/next-gen-innovator.jpg',
       publishedDate: '2026-06-01',
       date: '2026-06-30',
       endDate: '2026-07-31',
@@ -400,6 +400,8 @@ function backfillActivities(arr, defArr) {
      'title', 'title_en'].forEach(f => {
       if (def[f] !== undefined && (item[f] === undefined || item[f] === '')) item[f] = def[f];
     });
+    // Facebook CDN URLs expire — replace with durable default when still pointing at fbcdn
+    if (def.image && (!item.image || /fbcdn\.net/i.test(item.image))) item.image = def.image;
     if (def.body) item.body = def.body;
     if (def.body_en) item.body_en = def.body_en;
   });
