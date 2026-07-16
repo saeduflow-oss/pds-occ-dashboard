@@ -22,7 +22,7 @@ const DEFAULT_DATA = {
       subtitle: 'โรงเรียนสาธิตมหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน<br/>Patumwan Demonstration School · SWU',
       eyebrow: 'Department of Career & Technology',
       bg: 'di-1',
-      image: 'https://scontent.fbkk22-4.fna.fbcdn.net/v/t39.30808-6/448724555_961858312610175_6875370469297480874_n.png?stp=dst-png&cstp=mx1920x1080&ctp=s1920x1080&_nc_cat=106&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=5mguj8ZRt1wQ7kNvwEc_UFB&_nc_oc=AdruYSj-JdZuV-hssMP5Kkrb3WvL4M7tRjPeKeL2ONMXGSvjyjzjnZQk99-YdcGQFc_eSMiADtfKYHjzRMIwMRjR&_nc_zt=23&_nc_ht=scontent.fbkk22-4.fna&_nc_gid=6isX0b7W94GcX3Vezk2uAQ&_nc_ss=7b2a8&oh=00_AQAlMkWYhhcKBxv09e3Xk0a3efXIU46qIhBB-kfIXUaI1Q&oe=6A52C3DA',
+      image: 'assets/img/hero-dept-banner.png',
       link: 'about.html',
       linkText: 'เรียนรู้เพิ่มเติม'
     },
@@ -366,6 +366,19 @@ function backfillResources(arr, defArr) {
   return list;
 }
 
+function backfillSlider(arr, defArr) {
+  if (!Array.isArray(defArr)) return arr || [];
+  const defById = {};
+  defArr.forEach(d => { defById[d.id] = d; });
+  const list = Array.isArray(arr) && arr.length ? arr.slice() : [];
+  list.forEach((item, idx) => {
+    const def = defById[item.id] || defArr[idx];
+    if (!def) return;
+    if (def.image && (!item.image || /fbcdn\.net/i.test(item.image))) item.image = def.image;
+  });
+  return list.length ? list : defArr.slice();
+}
+
 function backfillCalendar(arr, defArr) {
   if (!Array.isArray(defArr)) return arr || [];
   const defById = {};
@@ -448,6 +461,7 @@ const CMS = {
       merged.curriculum = backfillCurriculum(merged.curriculum, DEFAULT_DATA.curriculum);
       merged.activities = backfillActivities(merged.activities, DEFAULT_DATA.activities);
       merged.calendar = backfillCalendar(merged.calendar, DEFAULT_DATA.calendar);
+      merged.slider = backfillSlider(merged.slider, DEFAULT_DATA.slider);
       // Migrate retired FB proxy URL saved in older localStorage
       if (merged.site && merged.site.fb_api_url === 'https://pds-occ-fb-proxy.onrender.com') {
         merged.site.fb_api_url = DEFAULT_DATA.site.fb_api_url;
