@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>แหล่งเรียนรู้ | PDS OCC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css?v=50"/>
+  <style>
+    /* ── HERO (matched to faculty/about) ── */
+    .page-hero{
+      min-height:440px;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      padding:100px var(--px) 72px;
+      position:relative;overflow:hidden;text-align:center;
+      background:
+        linear-gradient(160deg,rgba(10,6,28,.92) 0%,rgba(30,18,65,.88) 55%,rgba(50,25,72,.85) 100%),
+        url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&q=80') center 40%/cover no-repeat;
+    }
+    .page-hero-bg{display:none}
+    .page-hero::before{content:'';position:absolute;inset:0;z-index:1;
+      background:radial-gradient(ellipse at 30% 70%,rgba(105,88,166,.3) 0%,transparent 55%),
+                 radial-gradient(ellipse at 75% 25%,rgba(199,132,183,.2) 0%,transparent 50%);}
+    .page-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:48px;z-index:2;
+      background:linear-gradient(to bottom,transparent,rgba(255,255,255,.15));}
+    .page-hero>*{position:relative;z-index:3}
+    .page-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;
+      font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+      color:rgba(199,132,183,.9);border:1px solid rgba(199,132,183,.3);
+      background:rgba(199,132,183,.1);backdrop-filter:blur(6px);
+      padding:5px 16px;border-radius:var(--r-pill);margin-bottom:20px;}
+    .page-hero-title{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:800;letter-spacing:-.03em;
+      line-height:1.1;color:#fff;margin-bottom:14px;text-shadow:0 2px 24px rgba(0,0,0,.3);}
+    .page-hero-sub{font-size:clamp(.85rem,1.3vw,.95rem);color:rgba(255,255,255,.5);
+      line-height:1.7;max-width:460px;margin:0 auto;}
+    .hero-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;}
+    .hero-divider-line{width:32px;height:1px;background:rgba(255,255,255,.18);}
+    .hero-divider-dot{width:4px;height:4px;border-radius:50%;background:var(--pink-m);opacity:.65;}
+
+    /* ── PAGE ── */
+    .res-page{background:#fff;padding:56px var(--px) 88px;}
+    .res-inner{max-width:var(--max-w);margin:0 auto;}
+
+    /* ── SECTION HEADER ── */
+    .res-sec{margin-bottom:52px;}
+    .sec-banner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;margin-bottom:32px;}
+    .sec-banner-left{display:flex;flex-direction:column;align-items:center;gap:8px;}
+    .sec-banner-eyebrow{
+      display:inline-flex;align-items:center;
+      font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      padding:5px 14px;border-radius:var(--r-pill);color:#fff;
+    }
+    .eyebrow-learn {background:linear-gradient(90deg,#6958a6,#c784b7);}
+    .eyebrow-code  {background:linear-gradient(90deg,#16a34a,#22c55e);}
+    .sec-banner-title{
+      font-size:clamp(1.4rem,2.5vw,1.85rem);font-weight:800;
+      color:#1e1a36;letter-spacing:-.03em;line-height:1.1;
+    }
+    .sec-banner-desc{font-size:.78rem;color:#a09cc0;line-height:1.5;}
+
+    /* ── SECTION DIVIDER ── */
+    .res-divider{height:1px;margin:8px 0 52px;
+      background:linear-gradient(to right,transparent,#e4dff8 30%,#e4dff8 70%,transparent);}
+
+    /* ── RESOURCE CARD GRID ── */
+    .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+
+    /* ── RESOURCE CARD ── */
+    .res-card{
+      display:flex;flex-direction:column;
+      background:#fff;border:1.5px solid #edeaf8;border-radius:20px;overflow:hidden;
+      text-decoration:none;
+      box-shadow:0 2px 8px rgba(105,88,166,.06),0 1px 3px rgba(0,0,0,.04);
+      transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s;
+    }
+    .res-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 8px 32px rgba(105,88,166,.14),0 2px 8px rgba(0,0,0,.05);
+      border-color:#ccc4f0;
+    }
+
+    /* ── LOGO THUMBNAIL ── */
+    .res-card-thumb{
+      width:100%;aspect-ratio:3/2;flex-shrink:0;
+      position:relative;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .rc-badge-wrap{position:absolute;top:9px;left:9px;z-index:2;display:flex;gap:4px;flex-wrap:wrap;}
+    .res-subj{
+      font-size:.52rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+      padding:3px 9px;border-radius:20px;backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.3);
+    }
+    .subj-ai    {background:rgba(60,90,220,.85);color:#fff;}
+    .subj-robot {background:rgba(200,90,30,.85);color:#fff;}
+    .subj-drone {background:rgba(20,130,185,.85);color:#fff;}
+    .subj-cg    {background:rgba(195,50,110,.85);color:#fff;}
+    .subj-dmt   {background:rgba(110,50,195,.85);color:#fff;}
+    .subj-code  {background:rgba(22,163,74,.88);color:#fff;}
+
+    .logo-center{display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+    .si-logo{
+      width:68px;height:68px;object-fit:contain;
+      transition:transform .35s var(--ease);
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,.10));
+    }
+    .fav-logo{width:64px;height:64px;border-radius:14px;}
+    .res-card:hover .si-logo{transform:scale(1.1);}
+
+    /* ── CARD BODY ── */
+    .res-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;}
+    .res-card-title{font-size:.9rem;font-weight:800;color:#1e1a36;line-height:1.3;margin-bottom:5px;}
+    .res-card-desc{font-size:.73rem;color:#9490b8;line-height:1.6;flex:1;}
+    .res-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+    .res-card-url{
+      font-size:.58rem;font-weight:600;color:#c0b8d8;
+      display:inline-flex;align-items:center;gap:4px;
+      overflow:hidden;text-overflow:ellipsis;max-width:75%;white-space:nowrap;
+      transition:color .15s;
+    }
+    .res-card:hover .res-card-url{color:#6958a6;}
+    .res-card-url svg{width:9px;height:9px;flex-shrink:0;opacity:.7;}
+    .res-card-arrow{
+      width:28px;height:28px;border-radius:50%;
+      background:linear-gradient(135deg,#ebe6ff,#f5e8fb);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      transition:background .2s var(--ease),transform .2s var(--ease);
+    }
+    .res-card-arrow svg{width:12px;height:12px;color:#8878c8;transition:color .2s;}
+    .res-card:hover .res-card-arrow{
+      background:linear-gradient(135deg,#6958a6,#c784b7);
+      transform:translateX(2px);
+    }
+    .res-card:hover .res-card-arrow svg{color:#fff;}
+
+    /* ── EMPTY STATE ── */
+    .res-empty{
+      grid-column:1/-1;text-align:center;
+      padding:36px 20px;border:1.5px dashed #ddd6f2;border-radius:16px;
+      color:#a09cc0;font-size:.82rem;background:#faf9ff;
+    }
+
+    @media(max-width:900px){.res-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:640px){.res-grid{grid-template-columns:repeat(2,1fr);gap:12px;}}
+    @media(max-width:380px){.res-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="common.skip">ข้ามไปยังเนื้อหาหลัก</a>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Patumwan_Demonstration_School%2C_SWU_Logo.svg"
+           alt="โลโก้ โรงเรียนสาธิตปทุมวัน" class="navbar-logo" width="62" height="62"/>
+      <div class="navbar-divider" aria-hidden="true"></div>
+      <div class="navbar-brand-text">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT26HbaXKTEB1oR4znYW8lmNjJ_E5_dR2PcKyJkSpIlhQEO_Pq13FTlv-0X&s=10"
+             alt="โลโก้กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิตมหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน" class="navbar-text-logo"/>
+      </div>
+    </a>
+    <nav class="navbar-nav" id="nav" aria-label="เมนูหลัก">
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="about.html" data-i18n="nav.about" aria-haspopup="true" aria-expanded="false">เกี่ยวกับเรา<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.about">เกี่ยวกับเรา</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#philosophy" data-i18n="nav.sub.philosophy">ปรัชญา</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#vision" data-i18n="nav.sub.vision">วิสัยทัศน์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#mission" data-i18n="nav.sub.mission">พันธกิจ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#faculty" data-i18n="nav.sub.faculty">บุคลากร</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="curriculum.html" data-i18n="nav.curriculum" aria-haspopup="true" aria-expanded="false">หลักสูตร<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.curriculum">หลักสูตร</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-1" data-i18n="nav.sub.grade1">มัธยมศึกษาปีที่ 1</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-2" data-i18n="nav.sub.grade2">มัธยมศึกษาปีที่ 2</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-3" data-i18n="nav.sub.grade3">มัธยมศึกษาปีที่ 3</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-4" data-i18n="nav.sub.grade4">มัธยมศึกษาปีที่ 4</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-5" data-i18n="nav.sub.grade5">มัธยมศึกษาปีที่ 5</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-6" data-i18n="nav.sub.grade6">มัธยมศึกษาปีที่ 6</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle active" href="resources.html" data-i18n="nav.resources" aria-haspopup="true" aria-expanded="false">แหล่งเรียนรู้<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.resources">แหล่งเรียนรู้</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-book" data-i18n="nav.sub.book">หนังสือ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-website" data-i18n="nav.sub.website">เว็บไซต์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-journal" data-i18n="nav.sub.journal">วารสาร</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-research" data-i18n="nav.sub.research">งานวิจัย</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="news.html#pr-activities" data-i18n="nav.pr" aria-haspopup="true" aria-expanded="false">ประชาสัมพันธ์<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.pr">ประชาสัมพันธ์</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-activities" data-i18n="index.activity.title">กิจกรรม</a>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-calendar" data-i18n="nav.sub.calendar">ปฏิทินกิจกรรม</a>
+        </div>
+      </div>
+      <a class="nav-link" href="contact.html" data-i18n="nav.contact">ติดต่อ</a>
+    </nav>
+    <div class="navbar-end">
+      <div class="lang-toggle" role="group" aria-label="เลือกภาษา">
+        <button class="lang-btn active" aria-pressed="true">TH</button>
+        <button class="lang-btn" aria-pressed="false">EN</button>
+      </div>
+      <button class="search-btn" aria-label="ค้นหา">
+        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+          <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hamburger" id="burger" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="page-hero" id="main" data-cms-hero="resources">
+  <div class="page-hero-eyebrow" data-i18n="res.hero.eyebrow">Learning Resources</div>
+  <h1 class="page-hero-title" data-i18n="res.hero.title">แหล่งเรียนรู้</h1>
+  <p class="page-hero-sub" data-i18n="res.hero.sub">รวบรวมแพลตฟอร์มและเครื่องมือสำหรับเรียนรู้ด้าน AI หุ่นยนต์ โดรน กราฟิก และการเขียนโปรแกรม</p>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div><div class="hero-divider-dot"></div><div class="hero-divider-line"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="res-page">
+  <div class="res-inner">
+
+    <!-- หนังสือ -->
+    <div class="res-sec reveal" id="res-book">
+      <div class="sec-banner">
+        <div class="sec-banner-left">
+          <span class="sec-banner-eyebrow eyebrow-learn" data-i18n="res.sec.book.eyebrow">Books</span>
+          <div class="sec-banner-title" data-i18n="res.sec.book.title">หนังสือ</div>
+          <div class="sec-banner-desc" data-i18n="res.sec.book.desc">หนังสือและตำราเรียนออนไลน์ฟรีด้านเทคโนโลยีและการเขียนโปรแกรม</div>
+        </div>
+      </div>
+      <div class="res-grid" id="resGrid-book"></div>
+    </div>
+
+    <div class="res-divider"></div>
+
+    <!-- เว็บไซต์ -->
+    <div class="res-sec reveal" id="res-website">
+      <div class="sec-banner">
+        <div class="sec-banner-left">
+          <span class="sec-banner-eyebrow eyebrow-learn" data-i18n="res.sec.website.eyebrow">Websites</span>
+          <div class="sec-banner-title" data-i18n="res.sec.website.title">เว็บไซต์</div>
+          <div class="sec-banner-desc" data-i18n="res.sec.website.desc">เว็บไซต์และเครื่องมือสำหรับเรียน AI หุ่นยนต์ โดรน กราฟิก และดิจิทัลมีเดีย</div>
+        </div>
+      </div>
+      <div class="res-grid" id="resGrid-website"></div>
+    </div>
+
+    <div class="res-divider"></div>
+
+    <!-- วารสาร -->
+    <div class="res-sec reveal" id="res-journal">
+      <div class="sec-banner">
+        <div class="sec-banner-left">
+          <span class="sec-banner-eyebrow eyebrow-learn" data-i18n="res.sec.journal.eyebrow">Journals</span>
+          <div class="sec-banner-title" data-i18n="res.sec.journal.title">วารสาร</div>
+          <div class="sec-banner-desc" data-i18n="res.sec.journal.desc">วารสารและนิตยสารวิชาการด้านเทคโนโลยีและวิทยาการคอมพิวเตอร์</div>
+        </div>
+      </div>
+      <div class="res-grid" id="resGrid-journal"></div>
+    </div>
+
+    <div class="res-divider"></div>
+
+    <!-- งานวิจัย -->
+    <div class="res-sec reveal" id="res-research">
+      <div class="sec-banner">
+        <div class="sec-banner-left">
+          <span class="sec-banner-eyebrow eyebrow-learn" data-i18n="res.sec.research.eyebrow">Research</span>
+          <div class="sec-banner-title" data-i18n="res.sec.research.title">งานวิจัย</div>
+          <div class="sec-banner-desc" data-i18n="res.sec.research.desc">ฐานข้อมูลและคลังงานวิจัยวิชาการสำหรับการค้นคว้า</div>
+        </div>
+      </div>
+      <div class="res-grid" id="resGrid-research"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-name" data-i18n="footer.name">กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิต มศว ปทุมวัน</div>
+  <div class="footer-sub">Copyright &copy; 2026 (Computer Department of Patumwan Demonstrations School) All rights reserved.</div>
+</footer>
+
+<script src="assets/js/cms.js?v=28"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/script.js?v=40"></script>
+</body>
+</html>

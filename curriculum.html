@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>หลักสูตร | PDS OCC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css?v=50"/>
+  <style>
+    .page-hero {
+      min-height:440px; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:100px var(--px) 72px;
+      position:relative; overflow:hidden; text-align:center;
+      background:
+        linear-gradient(160deg,rgba(10,6,28,.92) 0%,rgba(30,18,65,.88) 55%,rgba(50,25,72,.85) 100%),
+        url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&q=80') center 40%/cover no-repeat;
+    }
+    .page-hero-bg{display:none}
+    .page-hero::before{content:'';position:absolute;inset:0;z-index:1;
+      background:radial-gradient(ellipse at 30% 70%,rgba(105,88,166,.3) 0%,transparent 55%),
+                 radial-gradient(ellipse at 75% 25%,rgba(199,132,183,.2) 0%,transparent 50%);}
+    .page-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:48px;z-index:2;
+      background:linear-gradient(to bottom,transparent 0%,rgba(255,255,255,.15) 100%);}
+    .page-hero>*{position:relative;z-index:3}
+    .page-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.62rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;color:rgba(199,132,183,.9);
+      border:1px solid rgba(199,132,183,.3);background:rgba(199,132,183,.1);backdrop-filter:blur(6px);
+      padding:5px 16px;border-radius:var(--r-pill);margin-bottom:20px;}
+    .page-hero-title{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:800;letter-spacing:-.03em;
+      line-height:1.1;color:#fff;margin-bottom:14px;text-shadow:0 2px 24px rgba(0,0,0,.3);}
+    .page-hero-sub{font-size:clamp(.85rem,1.3vw,.95rem);color:rgba(255,255,255,.5);
+      line-height:1.7;max-width:460px;margin:0 auto;}
+    .hero-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;}
+    .hero-divider-line{width:32px;height:1px;background:rgba(255,255,255,.18);}
+    .hero-divider-dot{width:4px;height:4px;border-radius:50%;background:var(--pink-m);opacity:.65;}
+
+    .curr-page{background:#fff;padding:60px var(--px) 88px;}
+    .curr-inner{max-width:var(--max-w);margin:0 auto;}
+
+    /* Section heading */
+    .curr-sec-head{text-align:center;margin-bottom:36px;}
+    .curr-sec-eyebrow{display:inline-flex;align-items:center;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      padding:6px 18px;border-radius:var(--r-pill);color:#fff;
+      background:linear-gradient(90deg,#6958a6,#c784b7);margin-bottom:12px;}
+    .curr-sec-title{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:800;color:#1e1a36;letter-spacing:-.02em;margin-bottom:8px;}
+    .curr-sec-desc{font-size:.92rem;color:#9490b8;margin:0 auto;line-height:1.65;}
+
+    /* Grade tabs */
+    .grade-tab-wrap{display:flex;align-items:flex-start;justify-content:center;
+      margin-bottom:36px;flex-wrap:wrap;gap:10px;}
+    .grade-group{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .grade-group-label{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      padding:4px 16px;border-radius:20px;white-space:nowrap;}
+    .grade-group:first-child .grade-group-label{background:#eee8ff;color:#6644c8;}
+    .grade-group:last-child  .grade-group-label{background:#fce7f3;color:#c84078;}
+    .grade-group-tabs{display:flex;gap:7px;}
+    .grade-group-sep{width:1px;background:linear-gradient(to bottom,transparent,#e0d9f5 40%,#e0d9f5 60%,transparent);
+      margin:0 18px;align-self:stretch;margin-top:10px;}
+    .grade-tab{display:flex;flex-direction:column;align-items:center;
+      padding:11px 24px;border-radius:12px;border:1.5px solid #e8e2f6;
+      background:#faf9ff;cursor:pointer;transition:all .2s var(--ease);font-family:inherit;}
+    .grade-tab-num{font-size:1.1rem;font-weight:700;color:#9490b8;line-height:1;transition:color .2s;}
+    .grade-tab:hover{border-color:#c8bef0;background:#fff;box-shadow:0 3px 12px rgba(105,88,166,.1);transform:translateY(-1px);}
+    .grade-group:first-child .grade-tab.active{background:#6958a6;border-color:transparent;box-shadow:0 4px 16px rgba(105,88,166,.28);}
+    .grade-group:last-child  .grade-tab.active{background:#a83870;border-color:transparent;box-shadow:0 4px 16px rgba(168,56,112,.24);}
+    .grade-tab.active .grade-tab-num{color:#fff;}
+
+    /* Panels */
+    .grade-panel{display:none;}
+    .grade-panel.active{display:block;}
+    .panel-header{margin-bottom:20px;}
+    .panel-grade-badge{display:inline-flex;align-items:center;gap:6px;
+      background:#f0ecff;color:#6958a6;
+      font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      padding:5px 16px;border-radius:var(--r-pill);margin-bottom:8px;}
+    .panel-title{font-size:clamp(1.2rem,2.4vw,1.55rem);font-weight:700;color:#1e1a36;letter-spacing:-.01em;}
+
+    /* Course sections */
+    .course-section{margin-bottom:32px;}
+    .course-section:last-child{margin-bottom:0;}
+    .cs-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .cs-badge{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;
+      font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      padding:5px 14px;border-radius:var(--r-pill);}
+    .cs-badge svg{width:12px;height:12px;}
+    .cs-badge-core{background:#f0ecff;color:#6958a6;}
+    .cs-badge-add {background:#fff0f5;color:#c04070;}
+    .cs-badge-elec{background:#e8faf5;color:#1888a0;}
+    .cs-rule{flex:1;height:1px;background:linear-gradient(to right,#ece8f8,transparent);}
+
+    /* Card grid */
+    .course-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+
+    /* Course card (non-clickable) */
+    .course-card{background:#fff;border:1.5px solid #e2dcf5;border-radius:16px;overflow:hidden;
+      box-shadow:0 4px 18px rgba(105,88,166,.11),0 1px 4px rgba(105,88,166,.07);
+      display:flex;flex-direction:column;cursor:default;
+      transition:box-shadow .2s,transform .2s;}
+    .course-card:hover{box-shadow:0 8px 28px rgba(105,88,166,.18),0 2px 8px rgba(105,88,166,.1);transform:translateY(-3px);}
+    .cc-img{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;flex-shrink:0;}
+    .cc-img img{width:100%;height:100%;object-fit:cover;}
+    .cc-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.04),rgba(0,0,0,.42));}
+
+    /* Category badge (top-left) */
+    .cc-cat{position:absolute;top:8px;left:8px;
+      font-size:.52rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+      padding:3px 10px;border-radius:20px;backdrop-filter:blur(8px);}
+    .cc-cat-core{background:rgba(105,88,166,.82);color:#fff;}
+    .cc-cat-add {background:rgba(192,64,112,.82);color:#fff;}
+    .cc-cat-elec{background:rgba(24,136,160,.82);color:#fff;}
+
+    /* Engineering-track badges (top-right) */
+    .cc-eng-ai,.cc-eng-dmt{
+      position:absolute;top:10px;right:10px;
+      font-size:.78rem;font-weight:800;letter-spacing:.04em;
+      padding:6px 14px;border-radius:30px;backdrop-filter:blur(10px);
+      color:#fff;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.25);
+      display:inline-flex;align-items:center;gap:5px;}
+    .cc-eng-ai  {background:linear-gradient(135deg,rgba(52,100,220,.95),rgba(90,60,200,.92));}
+    .cc-eng-dmt {background:linear-gradient(135deg,rgba(140,60,200,.95),rgba(180,50,140,.92));}
+
+    /* Card info */
+    .cc-info{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;}
+    .cc-code{font-size:.7rem;font-weight:600;color:#b0a8d0;margin-bottom:4px;font-family:monospace,sans-serif;}
+    .cc-name{font-size:.95rem;font-weight:700;color:#1e1a36;line-height:1.35;flex:1;}
+    .cc-meta{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:6px;flex-wrap:wrap;}
+    .cc-teacher{font-size:.72rem;color:#9490b8;font-weight:500;line-height:1.45;flex:1;min-width:0;}
+    .cc-sem{font-size:.64rem;font-weight:700;background:#f0ecff;color:#6958a6;
+      padding:3px 10px;border-radius:10px;white-space:nowrap;flex-shrink:0;}
+    .cc-pending{display:inline-block;margin-top:6px;font-size:.6rem;font-weight:700;
+      background:#fff5e0;color:#b87000;border:1px solid rgba(184,112,0,.2);
+      padding:3px 10px;border-radius:10px;}
+
+    /* Course type section divider */
+    .course-section{margin-bottom:36px;}
+    .course-section:last-child{margin-bottom:0;}
+    .ctype-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .ctype-label{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+    .ctype-rule{flex:1;height:1px;}
+
+    /* วิชาพื้นฐาน — ม่วง */
+    .ct-core .ctype-label{color:#6958a6;}
+    .ct-core .ctype-rule{background:linear-gradient(to right,#b8aee8,transparent);}
+
+    /* วิชาเพิ่มเติม — ชมพูบานเย็น */
+    .ct-add .ctype-label{color:#c04070;}
+    .ct-add .ctype-rule{background:linear-gradient(to right,#e8a0be,transparent);}
+
+    /* วิชาเลือกเพิ่ม — เขียวอมฟ้า */
+    .ct-elec .ctype-label{color:#1888a0;}
+    .ct-elec .ctype-rule{background:linear-gradient(to right,#8dd4e0,transparent);}
+
+    /* วิชาเอก DMT — gradient ม่วง→ชมพู */
+    .ct-dmt .ctype-label{background:linear-gradient(90deg,#8c3cc8,#b4328c);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .ct-dmt .ctype-rule{background:linear-gradient(to right,#d090e0,transparent);}
+
+
+    /* วิชาเอก (รวม) — gradient ม่วง→น้ำเงิน */
+    .ct-eng .ctype-label{background:linear-gradient(90deg,#5a3cc8,#3464dc);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .ct-eng .ctype-rule{background:linear-gradient(to right,#a090f0,transparent);}
+    /* วิชาเอก AI — gradient น้ำเงิน→ม่วง */
+    .ct-ai .ctype-label{background:linear-gradient(90deg,#3464dc,#5a3cc8);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .ct-ai .ctype-rule{background:linear-gradient(to right,#90b0f0,transparent);}
+
+    /* Empty state */
+    .course-empty{grid-column:1/-1;padding:14px 16px;text-align:center;
+      color:#c0bcd8;font-size:.76rem;font-weight:500;
+      border:1px dashed #e4dff5;border-radius:10px;background:#faf9ff;}
+
+    /* Legend */
+    .curr-legend{display:flex;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:.68rem;color:#7470a0;}
+    .legend-badge{font-size:.64rem;font-weight:800;letter-spacing:.03em;
+      padding:3px 10px;border-radius:20px;color:#fff;line-height:1;}
+    .legend-badge-ai {background:linear-gradient(135deg,#3464dc,#5a3cc8);}
+    .legend-badge-dmt{background:linear-gradient(135deg,#8c3cc8,#b4328c);}
+
+    @media(max-width:1000px){.course-card-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:700px){
+      .course-card-grid{grid-template-columns:repeat(2,1fr);}
+      .grade-group-sep{display:none;}
+      .grade-tab{padding:9px 16px;}
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="common.skip">ข้ามไปยังเนื้อหาหลัก</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Patumwan_Demonstration_School%2C_SWU_Logo.svg"
+           alt="โลโก้ โรงเรียนสาธิตปทุมวัน" class="navbar-logo" width="62" height="62"/>
+      <div class="navbar-divider" aria-hidden="true"></div>
+      <div class="navbar-brand-text">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT26HbaXKTEB1oR4znYW8lmNjJ_E5_dR2PcKyJkSpIlhQEO_Pq13FTlv-0X&s=10"
+             alt="โลโก้กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิตมหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน" class="navbar-text-logo"/>
+      </div>
+    </a>
+    <nav class="navbar-nav" id="nav" aria-label="เมนูหลัก">
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="about.html" data-i18n="nav.about" aria-haspopup="true" aria-expanded="false">เกี่ยวกับเรา<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.about">เกี่ยวกับเรา</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#philosophy" data-i18n="nav.sub.philosophy">ปรัชญา</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#vision" data-i18n="nav.sub.vision">วิสัยทัศน์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#mission" data-i18n="nav.sub.mission">พันธกิจ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#faculty" data-i18n="nav.sub.faculty">บุคลากร</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle active" href="curriculum.html" data-i18n="nav.curriculum" aria-haspopup="true" aria-expanded="false">หลักสูตร<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.curriculum">หลักสูตร</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-1" data-i18n="nav.sub.grade1">มัธยมศึกษาปีที่ 1</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-2" data-i18n="nav.sub.grade2">มัธยมศึกษาปีที่ 2</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-3" data-i18n="nav.sub.grade3">มัธยมศึกษาปีที่ 3</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-4" data-i18n="nav.sub.grade4">มัธยมศึกษาปีที่ 4</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-5" data-i18n="nav.sub.grade5">มัธยมศึกษาปีที่ 5</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-6" data-i18n="nav.sub.grade6">มัธยมศึกษาปีที่ 6</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="resources.html" data-i18n="nav.resources" aria-haspopup="true" aria-expanded="false">แหล่งเรียนรู้<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.resources">แหล่งเรียนรู้</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-book" data-i18n="nav.sub.book">หนังสือ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-website" data-i18n="nav.sub.website">เว็บไซต์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-journal" data-i18n="nav.sub.journal">วารสาร</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-research" data-i18n="nav.sub.research">งานวิจัย</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="news.html#pr-activities" data-i18n="nav.pr" aria-haspopup="true" aria-expanded="false">ประชาสัมพันธ์<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.pr">ประชาสัมพันธ์</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-activities" data-i18n="index.activity.title">กิจกรรม</a>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-calendar" data-i18n="nav.sub.calendar">ปฏิทินกิจกรรม</a>
+        </div>
+      </div>
+      <a class="nav-link" href="contact.html" data-i18n="nav.contact">ติดต่อ</a>
+    </nav>
+    <div class="navbar-end">
+      <div class="lang-toggle" role="group" aria-label="เลือกภาษา">
+        <button class="lang-btn active" aria-pressed="true">TH</button>
+        <button class="lang-btn" aria-pressed="false">EN</button>
+      </div>
+      <button class="search-btn" aria-label="ค้นหา">
+        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+          <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hamburger" id="burger" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="page-hero" id="main" data-cms-hero="curriculum">
+  <div class="page-hero-eyebrow" data-i18n="curr.hero.eyebrow">Curriculum</div>
+  <h1 class="page-hero-title" data-i18n="curr.hero.title">หลักสูตร</h1>
+  <p class="page-hero-sub" data-i18n="curr.hero.sub">รายวิชาในกลุ่มสาระการเรียนรู้เทคโนโลยี แบ่งตามระดับชั้น ม.1 – ม.6</p>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div><div class="hero-divider-dot"></div><div class="hero-divider-line"></div>
+  </div>
+</div>
+
+<div class="curr-page">
+  <div class="curr-inner">
+
+    <div class="curr-sec-head reveal">
+      <span class="curr-sec-eyebrow" data-i18n="curr.sec.eyebrow">Grade Levels</span>
+      <h2 class="curr-sec-title" data-i18n="curr.sec.title">ระดับชั้นที่เปิดสอน</h2>
+      <p class="curr-sec-desc" data-i18n="curr.sec.desc">เลือกระดับชั้นเพื่อดูรายวิชาที่เปิดสอนในแต่ละปีการศึกษา</p>
+    </div>
+
+    <div class="grade-tab-wrap reveal" style="margin-bottom:24px;">
+      <div class="grade-group">
+        <span class="grade-group-label" data-i18n="curr.grade.lower">มัธยมต้น</span>
+        <div class="grade-group-tabs">
+          <button class="grade-tab active" data-grade="1" onclick="switchGrade(1)"><span class="grade-tab-num" data-i18n="curr.tab.1">ม.1</span></button>
+          <button class="grade-tab"        data-grade="2" onclick="switchGrade(2)"><span class="grade-tab-num" data-i18n="curr.tab.2">ม.2</span></button>
+          <button class="grade-tab"        data-grade="3" onclick="switchGrade(3)"><span class="grade-tab-num" data-i18n="curr.tab.3">ม.3</span></button>
+        </div>
+      </div>
+      <div class="grade-group-sep"></div>
+      <div class="grade-group">
+        <span class="grade-group-label" data-i18n="curr.grade.upper">มัธยมปลาย</span>
+        <div class="grade-group-tabs">
+          <button class="grade-tab" data-grade="4" onclick="switchGrade(4)"><span class="grade-tab-num" data-i18n="curr.tab.4">ม.4</span></button>
+          <button class="grade-tab" data-grade="5" onclick="switchGrade(5)"><span class="grade-tab-num" data-i18n="curr.tab.5">ม.5</span></button>
+          <button class="grade-tab" data-grade="6" onclick="switchGrade(6)"><span class="grade-tab-num" data-i18n="curr.tab.6">ม.6</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ม.1 ══ -->
+    <div class="grade-panel active" id="grade-1">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.1.badge">มัธยมศึกษาปีที่ 1</div>
+        <h2 class="panel-title" data-i18n="curr.grade.1.title">รายวิชาชั้นมัธยมศึกษาปีที่ 1</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+    <!-- ══ ม.2 ══ -->
+        <!-- ══ ม.2 ══ -->
+    <div class="grade-panel" id="grade-2">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.2.badge">มัธยมศึกษาปีที่ 2</div>
+        <h2 class="panel-title" data-i18n="curr.grade.2.title">รายวิชาชั้นมัธยมศึกษาปีที่ 2</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+    <!-- ══ ม.3 ══ -->
+        <!-- ══ ม.3 ══ -->
+    <div class="grade-panel" id="grade-3">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.3.badge">มัธยมศึกษาปีที่ 3</div>
+        <h2 class="panel-title" data-i18n="curr.grade.3.title">รายวิชาชั้นมัธยมศึกษาปีที่ 3</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+    <!-- ══ ม.4 ══ -->
+        <!-- ══ ม.4 ══ -->
+    <div class="grade-panel" id="grade-4">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.4.badge">มัธยมศึกษาปีที่ 4</div>
+        <h2 class="panel-title" data-i18n="curr.grade.4.title">รายวิชาชั้นมัธยมศึกษาปีที่ 4</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+    <!-- ══ ม.5 ══ -->
+        <!-- ══ ม.5 ══ -->
+    <div class="grade-panel" id="grade-5">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.5.badge">มัธยมศึกษาปีที่ 5</div>
+        <h2 class="panel-title" data-i18n="curr.grade.5.title">รายวิชาชั้นมัธยมศึกษาปีที่ 5</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+    <!-- ══ ม.6 ══ -->
+        <!-- ══ ม.6 ══ -->
+    <div class="grade-panel" id="grade-6">
+      <div class="panel-header">
+        <div class="panel-grade-badge" data-i18n="curr.grade.6.badge">มัธยมศึกษาปีที่ 6</div>
+        <h2 class="panel-title" data-i18n="curr.grade.6.title">รายวิชาชั้นมัธยมศึกษาปีที่ 6</h2>
+      </div>
+      <div class="panel-courses"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-name" data-i18n="footer.name">กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิต มศว ปทุมวัน</div>
+  <div class="footer-sub">Copyright © 2026 (Computer Department of Patumwan Demonstrations School) All rights reserved.</div>
+</footer>
+
+<script src="assets/js/cms.js?v=28"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/script.js?v=40"></script>
+<script>
+  function switchGrade(n) {
+    document.querySelectorAll('.grade-tab').forEach(t => {
+      t.classList.toggle('active', parseInt(t.dataset.grade) === n);
+    });
+    document.querySelectorAll('.grade-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'grade-' + n);
+    });
+  }
+
+  /* Open the matching grade tab when arriving via #grade-N (e.g. navbar submenu) */
+  function openGradeFromHash() {
+    const m = (location.hash || '').match(/^#grade-([1-6])$/);
+    if (!m) return;
+    const n = parseInt(m[1], 10);
+    switchGrade(n);
+    document.getElementById('grade-' + n)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.addEventListener('hashchange', openGradeFromHash);
+  document.addEventListener('DOMContentLoaded', openGradeFromHash);
+</script>
+</body>
+</html>

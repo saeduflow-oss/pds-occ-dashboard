@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CMS Admin | PDS OCC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/css/style.css?v=28"/>
+  <link rel="stylesheet" href="admin.css?v=4"/>
+</head>
+<body>
+
+<!-- ═══════ LOGIN ═══════ -->
+<div class="admin-login" id="loginScreen">
+  <div class="login-card">
+    <div class="lc-logo-wrap">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Patumwan_Demonstration_School%2C_SWU_Logo.svg" alt="โลโก้" width="50" height="50"/>
+    </div>
+    <div class="lc-title">PDS OCC · CMS Admin</div>
+    <div class="lc-sub">กลุ่มสาระการเรียนรู้เทคโนโลยี<br/>กรุณาใส่รหัสผ่านเพื่อเข้าสู่ระบบ</div>
+    <div class="form-group">
+      <label class="form-label" for="loginPass">รหัสผ่าน</label>
+      <input class="form-input" id="loginPass" type="password" placeholder="•••••••••" autocomplete="current-password"/>
+    </div>
+    <div id="loginErr">รหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง</div>
+    <button class="btn-login" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <p class="login-hint">
+      รหัสผ่านเริ่มต้น: <code>admin1234</code>
+    </p>
+  </div>
+</div>
+
+<!-- ═══════ ADMIN APP ═══════ -->
+<div class="admin-layout" id="adminApp" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+      <div class="sb-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Patumwan_Demonstration_School%2C_SWU_Logo.svg" alt="Logo"/>
+      </div>
+      <div class="sb-text">
+        <div class="ab-title">PDS OCC CMS</div>
+        <div class="ab-sub">ระบบจัดการเนื้อหา</div>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-section">เนื้อหาหลัก</div>
+      <button class="admin-nav-item active" id="nav-dashboard" onclick="showPanel('dashboard',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.2" fill="currentColor" opacity=".7"/><rect x="9" y="1" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
+        Dashboard
+      </button>
+      <button class="admin-nav-item" id="nav-site" onclick="showPanel('site',this)">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        ข้อมูลทั่วไป
+      </button>
+      <button class="admin-nav-item" id="nav-slider" onclick="showPanel('slider',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 8h6M11 6l2 2-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Hero Slider
+      </button>
+      <button class="admin-nav-item" id="nav-dept" onclick="showPanel('dept',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" opacity=".2"/></svg>
+        กลุ่มงาน
+      </button>
+      <button class="admin-nav-item" id="nav-news" onclick="showPanel('news',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        ข่าวสาร
+      </button>
+      <button class="admin-nav-item" id="nav-activities" onclick="showPanel('activities',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 6h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        ประชาสัมพันธ์กิจกรรม
+      </button>
+      <button class="admin-nav-item" id="nav-calendar" onclick="showPanel('calendar',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 6h12M5 1v2M11 1v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        ปฏิทินกิจกรรม
+      </button>
+      <button class="admin-nav-item" id="nav-faculty" onclick="showPanel('faculty',this)">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M1 13c0-2.761 2.239-4 5-4s5 1.239 5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.3" opacity=".5"/><path d="M14 13c0-1.5-1-2.5-2-2.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".5"/></svg>
+        บุคลากร
+      </button>
+      <button class="admin-nav-item" id="nav-about" onclick="showPanel('about',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 6h6M5 9h4M5 12h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        หน้า About
+      </button>
+      <button class="admin-nav-item" id="nav-curriculum" onclick="showPanel('curriculum',this)">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 2h6a1 1 0 0 1 1 1v10a1 1 0 0 0-1-1H3z" fill="currentColor" opacity=".2"/><path d="M3 2h6a1 1 0 0 1 1 1v10a1 1 0 0 0-1-1H3z" stroke="currentColor" stroke-width="1.3"/><path d="M13 2h-3a1 1 0 0 0-1 1v10a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h3M5 8h3M5 11h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        หลักสูตร
+      </button>
+      <button class="admin-nav-item" id="nav-resources" onclick="showPanel('resources',this)">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.3"/><path d="M8 2.5C6.5 4 5.5 6 5.5 8s1 4 2.5 5.5M8 2.5C9.5 4 10.5 6 10.5 8s-1 4-2.5 5.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        แหล่งเรียนรู้
+      </button>
+      <button class="admin-nav-item" id="nav-labels" onclick="showPanel('labels',this)">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 3h10v10H3z" stroke="currentColor" stroke-width="1.3"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        ข้อความ UI
+      </button>
+      <button class="admin-nav-item" id="nav-heroes" onclick="showPanel('heroes',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><circle cx="6" cy="7" r="1.5" fill="currentColor" opacity=".5"/><path d="M2 11l3-3 2 2 4-4 3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Hero รูปพื้นหลัง
+      </button>
+      <button class="admin-nav-item" id="nav-contact" onclick="showPanel('contact',this)">
+        <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 5l6 4 6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        หน้าติดต่อ
+      </button>
+
+      <div class="admin-nav-section">ระบบ</div>
+      <button class="admin-nav-item" onclick="openPreview()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 3C4 3 1 8 1 8s3 5 7 5 7-5 7-5-3-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".5"/></svg>
+        Live Preview
+      </button>
+      <button class="admin-nav-item" onclick="exportData()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3M5 7l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v1.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Export JSON
+      </button>
+      <button class="admin-nav-item" onclick="importData()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 6v7M5 9l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11v1.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Import JSON
+      </button>
+      <button class="admin-nav-item" onclick="doReset()" style="color:rgba(248,113,113,.55)">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8a5 5 0 1 1 1.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M3 12V8h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        รีเซ็ตข้อมูล
+      </button>
+      <button class="admin-nav-item" onclick="doLogout()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M6 3H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3M10 5l3 3-3 3M6 8h7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        ออกจากระบบ
+      </button>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-footer-dot"></div>
+      <div class="sb-footer-text">PDS OCC CMS v2.0<br/>Local · localStorage</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="admin-panel active" id="panel-dashboard">
+      <div class="admin-header">
+        <h1>Dashboard</h1>
+        <p>ภาพรวมเว็บไซต์และ Quick Actions</p>
+      </div>
+
+      <!-- Preview bar -->
+      <div class="preview-bar">
+        <div class="pb-text"><strong>Live Preview</strong> — เปิดหน้าเว็บไซต์และดูการเปลี่ยนแปลงแบบ Real-time</div>
+        <button class="btn-preview" onclick="openPreview()">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 3C4 3 1 8 1 8s3 5 7 5 7-5 7-5-3-5-7-5z" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+          เปิด Preview
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="dash-section-title">สถิติเนื้อหา</div>
+      <div class="dash-stats" id="dashStats">
+        <div class="dash-stat">
+          <div class="ds-icon ds-purple">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 10h6M13 7l2 3-2 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-slides">–</div><div class="ds-label">Hero Slides</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-blue">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.2" fill="currentColor" opacity=".8"/><rect x="11" y="2" width="7" height="7" rx="1.2" fill="currentColor" opacity=".5"/><rect x="2" y="11" width="7" height="7" rx="1.2" fill="currentColor" opacity=".5"/><rect x="11" y="11" width="7" height="7" rx="1.2" fill="currentColor" opacity=".3"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-depts">–</div><div class="ds-label">กลุ่มงาน</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-pink">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="14" rx="1.8" stroke="currentColor" stroke-width="1.8"/><path d="M6 8h8M6 12h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-news">–</div><div class="ds-label">การ์ดข่าว</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-teal">
+            <svg viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 17c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="15" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5" opacity=".5"/><path d="M18 17c0-2-1.2-3.5-3-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-faculty">–</div><div class="ds-label">บุคลากร</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-purple">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 9h6M7 13h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-activities">–</div><div class="ds-label">กิจกรรม</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-blue">
+            <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 8h14M7 2v4M13 2v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-calendar">–</div><div class="ds-label">ปฏิทิน</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-pink">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 4h12v12H4z" stroke="currentColor" stroke-width="1.8"/><path d="M8 8h4M8 12h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-curriculum">–</div><div class="ds-label">รายวิชา</div></div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon ds-teal">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 6h12v10H4z" stroke="currentColor" stroke-width="1.8"/><path d="M7 6V4h6v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ds-body"><div class="ds-num" id="stat-resources">–</div><div class="ds-label">แหล่งเรียนรู้</div></div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="dash-section-title">Quick Actions</div>
+      <div class="dash-actions">
+        <button class="dash-action" onclick="showPanel('slider', document.getElementById('nav-slider'))">
+          <div class="da-icon ds-purple"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M11 6l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          แก้ไข Hero Slider
+        </button>
+        <button class="dash-action" onclick="showPanel('news', document.getElementById('nav-news')); setTimeout(addNews,100)">
+          <div class="da-icon ds-pink"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          เพิ่มข่าวใหม่
+        </button>
+        <button class="dash-action" onclick="showPanel('faculty', document.getElementById('nav-faculty')); setTimeout(addFaculty,100)">
+          <div class="da-icon ds-teal"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 14c0-2.5 2.5-4 6-4s6 1.5 6 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          เพิ่มบุคลากร
+        </button>
+        <button class="dash-action" onclick="showPanel('activities', document.getElementById('nav-activities')); setTimeout(addActivity,100)">
+          <div class="da-icon ds-purple"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          เพิ่มกิจกรรม
+        </button>
+        <button class="dash-action" onclick="showPanel('calendar', document.getElementById('nav-calendar')); setTimeout(addCalendarEvent,100)">
+          <div class="da-icon ds-blue"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 6h12M5 1.5V4M11 1.5V4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          เพิ่มปฏิทิน
+        </button>
+        <button class="dash-action" onclick="openPreview()">
+          <div class="da-icon ds-blue"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3C4 3 1 8 1 8s3 5 7 5 7-5 7-5-3-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg></div>
+          ดูหน้าเว็บไซต์
+        </button>
+      </div>
+
+      <!-- Export / Import -->
+      <div class="dash-section-title">สำรองและกู้คืนข้อมูล</div>
+      <div class="export-box">
+        <div class="export-box-head">Export / Import ข้อมูล CMS</div>
+        <div class="export-box-desc">
+          ดาวน์โหลดข้อมูลทั้งหมดเป็น JSON เพื่อสำรองข้อมูล หรือนำเข้าไฟล์ JSON เพื่อกู้คืนหรือย้ายข้อมูล
+        </div>
+        <div class="export-row">
+          <button class="btn-export" onclick="exportData()">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 9V2M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 10v1.5A1.5 1.5 0 0 0 2.5 13h9a1.5 1.5 0 0 0 1.5-1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            ดาวน์โหลด JSON
+          </button>
+          <button class="btn-import" onclick="importData()">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 5v7M4.5 7.5L7 5l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 10v1.5A1.5 1.5 0 0 0 2.5 13h9a1.5 1.5 0 0 0 1.5-1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            นำเข้า JSON
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SITE INFO ══ -->
+    <div class="admin-panel" id="panel-site">
+      <div class="admin-header">
+        <h1>ข้อมูลทั่วไป</h1>
+        <p>แก้ไขปรัชญา วิสัยทัศน์ และพันธกิจของกลุ่มสาระฯ</p>
+      </div>
+      <div class="admin-section">
+        <div class="admin-section-title">ข้อมูลพื้นฐาน</div>
+        <div class="form-group">
+          <label class="form-label" for="s-name">ชื่อกลุ่มสาระฯ</label>
+          <input class="form-input" id="s-name" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-school">ชื่อโรงเรียน</label>
+          <input class="form-input" id="s-school" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-philosophy">ปรัชญา</label>
+          <input class="form-input" id="s-philosophy" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-vision">วิสัยทัศน์</label>
+          <textarea class="form-textarea" id="s-vision" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-mission">พันธกิจ</label>
+          <textarea class="form-textarea" id="s-mission" rows="3"></textarea>
+        </div>
+        <div class="admin-section-title" style="margin-top:8px">Facebook / API</div>
+        <div class="form-group">
+          <label class="form-label" for="s-fb-page">Facebook Page URL</label>
+          <input class="form-input" id="s-fb-page" type="url" placeholder="https://www.facebook.com/..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-fb-api">Railway API URL (ดึงข่าว FB)</label>
+          <input class="form-input" id="s-fb-api" type="url" placeholder="https://your-app.up.railway.app"/>
+          <div class="form-hint">ตั้งค่าเดียวกับแท็บข่าวสาร — บันทึกที่นี่หรือในแท็บข่าวสารก็ได้</div>
+        </div>
+        <button class="btn-save" onclick="saveSite()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          บันทึก
+        </button>
+      </div>
+
+      <div class="admin-section">
+        <div class="admin-section-title">ไว้อาลัย / ประกาศข่าวสาร</div>
+        <p class="adm-label-sub" style="margin-bottom:14px">ริบบิ้นมุมขวาล่าง + ป๊อปอัปประกาศ (แบบ โรงเรียนสาธิต จุฬาฯ) — แก้แล้วกดบันทึก</p>
+        <div class="form-row">
+          <label class="adm-label-text" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" id="mr-enabled"/> เปิดใช้งานบนเว็บไซต์
+          </label>
+          <label class="adm-label-text" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" id="mr-grayscale"/> ทำเว็บเป็นขาวดำ (grayscale)
+          </label>
+        </div>
+        <div class="form-row">
+          <label class="adm-label-text" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" id="mr-ribbon" checked/> แสดงริบบิ้นมุมขวาล่าง
+          </label>
+          <label class="adm-label-text" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" id="mr-modal"/> เปิดป๊อปอัปอัตโนมัติ
+          </label>
+        </div>
+        <div class="form-row">
+          <label class="adm-label-text" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" id="mr-modal-once" checked/> แสดงป๊อปอัปครั้งเดียวต่อ session
+          </label>
+          <div class="form-group">
+            <label class="form-label" for="mr-mode">รูปแบบ</label>
+            <select class="form-select" id="mr-mode">
+              <option value="mourning">ไว้อาลัย (ขาวดำ)</option>
+              <option value="announce">ประกาศข่าว (สี)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-title">หัวข้อ (TH)</label>
+          <input class="form-input" id="mr-title" type="text" placeholder="สถิตในใจปวงชนตราบนิรันดร์"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-title-en">หัวข้อ (EN)</label>
+          <input class="form-input" id="mr-title-en" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-sub">คำนำ / บรรทัดย่อย (TH)</label>
+          <input class="form-input" id="mr-sub" type="text"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-body">เนื้อหาประกาศ (TH)</label>
+          <textarea class="form-textarea" id="mr-body" rows="5" placeholder="ข้อความอาลัยหรือประกาศ..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-body-en">เนื้อหา (EN)</label>
+          <textarea class="form-textarea" id="mr-body-en" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-footer">ลายเซ็น / ท้ายประกาศ (TH)</label>
+          <textarea class="form-textarea" id="mr-footer" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mr-image">URL รูปภาพ (ด้านซ้ายในป๊อปอัป)</label>
+          <input class="form-input" id="mr-image" type="url" placeholder="https://..."/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="mr-link">ลิงก์เพิ่มเติม (ถ้ามี)</label>
+            <input class="form-input" id="mr-link" type="url" placeholder="https://..."/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mr-link-text">ข้อความปุ่มลิงก์</label>
+            <input class="form-input" id="mr-link-text" type="text" placeholder="อ่านเพิ่มเติม"/>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <button class="btn-save" onclick="saveMourning()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            บันทึกไว้อาลัย / ประกาศ
+          </button>
+          <button class="btn-icon" type="button" onclick="previewMourning()">ดูตัวอย่างป๊อปอัป</button>
+        </div>
+        <p class="adm-infobox" style="margin-top:14px">
+          <strong>หมายเหตุ:</strong> การตั้งค่าบันทึกใน CMS (localStorage) — ผู้เข้าชมทุกคนจะเห็นเมื่อ deploy ค่า
+          <code>mourning.enabled: true</code> ใน <code>assets/js/cms.js</code> หรือใช้ Export/Import JSON
+        </p>
+      </div>
+    </div>
+
+    <!-- ══ SLIDER ══ -->
+    <div class="admin-panel" id="panel-slider">
+      <div class="admin-header">
+        <h1>Hero Slider</h1>
+        <p>จัดการสไลด์ในหน้าแรก (สูงสุด 5 สไลด์)</p>
+      </div>
+      <div id="sliderList"></div>
+      <button class="btn-add" onclick="addSlide()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มสไลด์
+      </button>
+    </div>
+
+    <!-- ══ DEPT ══ -->
+    <div class="admin-panel" id="panel-dept">
+      <div class="admin-header">
+        <h1>กลุ่มงาน (Departments)</h1>
+        <p>แก้ไขชื่อ รหัส และคำอธิบายของแต่ละ Department</p>
+      </div>
+      <div id="deptList"></div>
+      <button class="btn-add" onclick="addDept()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่ม Department
+      </button>
+    </div>
+
+    <!-- ══ NEWS ══ -->
+    <div class="admin-panel" id="panel-news">
+      <div class="admin-header">
+        <h1>ข่าวสารและกิจกรรม</h1>
+        <p>ดึง Post จาก Facebook อัตโนมัติผ่าน Railway หรือเพิ่มการ์ดด้วยตัวเอง</p>
+      </div>
+      <div class="admin-section">
+        <div class="admin-section-title">
+          <span>Facebook Live Feed (Railway)</span>
+          <span id="fbApiStatus" style="font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;display:none">✓ เชื่อมต่อแล้ว</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Railway API URL</label>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" id="n-fb-api" type="url" placeholder="https://your-project.railway.app" style="flex:1"/>
+            <button class="btn-icon" style="white-space:nowrap;padding:0 14px" onclick="testFbApi()">ทดสอบ</button>
+          </div>
+          <p style="font-size:.7rem;color:#9186a8;margin-top:6px;line-height:1.6">
+            เมื่อตั้งค่า URL นี้ หน้าเว็บจะดึง Post ล่าสุดจาก Facebook Page อัตโนมัติ — ถ้าปล่อยว่างจะใช้การ์ดข่าวด้านล่างแทน
+          </p>
+        </div>
+        <button class="btn-save" onclick="saveFbApi()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          บันทึก URL
+        </button>
+      </div>
+      <div class="smart-link-box">
+        <div class="slb-label">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 6l-4 4M6.5 4.5l1-1a2.828 2.828 0 0 1 4 4l-1 1M9.5 11.5l-1 1a2.828 2.828 0 0 1-4-4l1-1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          วางลิงก์เพื่อสร้างการ์ดข่าวอัตโนมัติ
+        </div>
+        <div class="slb-row">
+          <input class="form-input" id="smartLinkInput" placeholder="วาง URL จาก Facebook · YouTube · Line · เว็บทั่วไป…" type="url"/>
+          <button class="btn-smart" onclick="addNewsFromLink()">+ เพิ่มการ์ด</button>
+        </div>
+        <div class="slb-chips">
+          <span class="slb-chip fb">Facebook</span>
+          <span class="slb-chip yt">YouTube</span>
+          <span class="slb-chip ln">LINE OA</span>
+          <span class="slb-chip web">เว็บทั่วไป</span>
+        </div>
+      </div>
+      <div id="newsList"></div>
+      <button class="btn-add" onclick="addNews()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มการ์ดด้วยตัวเอง
+      </button>
+    </div>
+
+    <!-- ══ ACTIVITIES ══ -->
+    <div class="admin-panel" id="panel-activities">
+      <div class="admin-header">
+        <h1>ประชาสัมพันธ์กิจกรรม</h1>
+        <p>จัดการการ์ดกิจกรรมที่แสดงบนหน้าแรก (4 รายการ) และหน้าประชาสัมพันธ์ (ทั้งหมด)</p>
+      </div>
+      <div id="activityList"></div>
+      <button class="btn-add" onclick="addActivity()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มการ์ดกิจกรรม
+      </button>
+    </div>
+
+    <!-- ══ CALENDAR ══ -->
+    <div class="admin-panel" id="panel-calendar">
+      <div class="admin-header">
+        <h1>ปฏิทินกิจกรรม</h1>
+        <p>เพิ่ม แก้ไข และลบกิจกรรมที่แสดงในปฏิทินหน้าประชาสัมพันธ์</p>
+      </div>
+      <div id="calendarList"></div>
+      <button class="btn-add" onclick="addCalendarEvent()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มกิจกรรมในปฏิทิน
+      </button>
+    </div>
+
+    <!-- ══ FACULTY ══ -->
+    <div class="admin-panel" id="panel-faculty">
+      <div class="admin-header">
+        <h1>บุคลากร</h1>
+        <p>จัดการข้อมูลคณาจารย์กลุ่มสาระฯ</p>
+      </div>
+      <div id="facultyList"></div>
+      <button class="btn-add" onclick="addFaculty()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มบุคลากร
+      </button>
+    </div>
+
+    <!-- ══ CURRICULUM ══ -->
+    <div class="admin-panel" id="panel-curriculum">
+      <div class="admin-header">
+        <h1>หลักสูตร</h1>
+        <p>จัดการรายวิชาในแต่ละระดับชั้น ม.1–ม.6</p>
+      </div>
+
+      <!-- Grade tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;" id="currGradeTabs">
+        <button class="btn-icon active" id="cgTab-1" onclick="currShowGrade(1)" style="padding:6px 14px">ม.1</button>
+        <button class="btn-icon" id="cgTab-2" onclick="currShowGrade(2)" style="padding:6px 14px">ม.2</button>
+        <button class="btn-icon" id="cgTab-3" onclick="currShowGrade(3)" style="padding:6px 14px">ม.3</button>
+        <button class="btn-icon" id="cgTab-4" onclick="currShowGrade(4)" style="padding:6px 14px">ม.4</button>
+        <button class="btn-icon" id="cgTab-5" onclick="currShowGrade(5)" style="padding:6px 14px">ม.5</button>
+        <button class="btn-icon" id="cgTab-6" onclick="currShowGrade(6)" style="padding:6px 14px">ม.6</button>
+      </div>
+
+      <div id="currCourseList"></div>
+      <button class="btn-add" onclick="addCourse()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มรายวิชา
+      </button>
+    </div>
+
+    <!-- ══ RESOURCES ══ -->
+    <div class="admin-panel" id="panel-resources">
+      <div class="admin-header">
+        <h1>แหล่งเรียนรู้</h1>
+        <p>จัดการการ์ดแหล่งเรียนรู้ แยกตามประเภท: เว็บไซต์ / หนังสือ / วารสาร / งานวิจัย</p>
+      </div>
+      <div id="resourceList"></div>
+      <button class="btn-add" onclick="addResource()">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        เพิ่มแหล่งเรียนรู้
+      </button>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div class="admin-panel" id="panel-about">
+      <div class="admin-header">
+        <h1>หน้า About</h1>
+        <p>แก้ไขปรัชญา วิสัยทัศน์ และพันธกิจที่แสดงในหน้า About</p>
+      </div>
+      <div id="aboutForm">
+        <div class="admin-section">
+          <div class="admin-section-title">ปรัชญา</div>
+          <div class="form-group">
+            <label class="form-label">ป้ายปรัชญา (TH)</label>
+            <input class="form-input" id="ab-phil-badge" type="text"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ป้ายปรัชญา (EN)</label>
+            <input class="form-input" id="ab-phil-badge-en" type="text"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">คำคมปรัชญา (TH) — รองรับ HTML เช่น &lt;em&gt;</label>
+            <textarea class="form-textarea" id="ab-phil-text" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">คำคมปรัชญา (EN)</label>
+            <textarea class="form-textarea" id="ab-phil-text-en" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">คำอธิบายปรัชญา (TH)</label>
+            <textarea class="form-textarea" id="ab-phil-sub" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">คำอธิบายปรัชญา (EN)</label>
+            <textarea class="form-textarea" id="ab-phil-sub-en" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">วิสัยทัศน์</div>
+          <div class="form-group">
+            <label class="form-label">ข้อความวิสัยทัศน์ (TH)</label>
+            <textarea class="form-textarea" id="ab-vision" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ข้อความวิสัยทัศน์ (EN)</label>
+            <textarea class="form-textarea" id="ab-vision-en" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">พันธกิจ 4 ด้าน</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 1 — หัวข้อ (TH)</label><input class="form-input" id="ab-mc1-title"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 1 — หัวข้อ (EN)</label><input class="form-input" id="ab-mc1-title-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 1 — คำอธิบาย (TH)</label><input class="form-input" id="ab-mc1-text"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 1 — คำอธิบาย (EN)</label><input class="form-input" id="ab-mc1-text-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 2 — หัวข้อ (TH)</label><input class="form-input" id="ab-mc2-title"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 2 — หัวข้อ (EN)</label><input class="form-input" id="ab-mc2-title-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 2 — คำอธิบาย (TH)</label><input class="form-input" id="ab-mc2-text"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 2 — คำอธิบาย (EN)</label><input class="form-input" id="ab-mc2-text-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 3 — หัวข้อ (TH)</label><input class="form-input" id="ab-mc3-title"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 3 — หัวข้อ (EN)</label><input class="form-input" id="ab-mc3-title-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 3 — คำอธิบาย (TH)</label><input class="form-input" id="ab-mc3-text"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 3 — คำอธิบาย (EN)</label><input class="form-input" id="ab-mc3-text-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 4 — หัวข้อ (TH)</label><input class="form-input" id="ab-mc4-title"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 4 — หัวข้อ (EN)</label><input class="form-input" id="ab-mc4-title-en"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">พันธกิจที่ 4 — คำอธิบาย (TH)</label><input class="form-input" id="ab-mc4-text"/></div>
+            <div class="form-group"><label class="form-label">พันธกิจที่ 4 — คำอธิบาย (EN)</label><input class="form-input" id="ab-mc4-text-en"/></div>
+          </div>
+          <button class="btn-save" onclick="saveAbout()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            บันทึกหน้า About
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LABELS (UI TEXT) ══ -->
+    <div class="admin-panel" id="panel-labels">
+      <div class="admin-header">
+        <h1>ข้อความ UI</h1>
+        <p>แก้ไขข้อความเมนู หน้าแรก หัวข้อหน้า หลักสูตร แหล่งเรียนรู้ ติดต่อ และอื่น ๆ (TH / EN)</p>
+      </div>
+      <div class="admin-section">
+        <div class="form-group">
+          <label class="form-label" for="label-search">ค้นหาคีย์</label>
+          <input class="form-input" id="label-search" type="search" placeholder="เช่น nav.about, index.tagline" oninput="filterLabelFields(this.value)"/>
+        </div>
+        <div id="labelsForm"></div>
+        <button class="btn-save" onclick="saveLabels()" style="margin-top:16px">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          บันทึกข้อความ UI
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ HERO BACKGROUNDS ══ -->
+    <div class="admin-panel" id="panel-heroes">
+      <div class="admin-header">
+        <h1>Hero รูปพื้นหลัง</h1>
+        <p>เปลี่ยนรูปพื้นหลังของหน้า About, หลักสูตร, แหล่งเรียนรู้, ประชาสัมพันธ์ และติดต่อ</p>
+      </div>
+      <div class="admin-section" id="heroesForm">
+        <div class="form-group">
+          <label class="form-label" for="hero-about">About — URL รูป</label>
+          <input class="form-input" id="hero-about" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="hero-curriculum">หลักสูตร — URL รูป</label>
+          <input class="form-input" id="hero-curriculum" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="hero-resources">แหล่งเรียนรู้ — URL รูป</label>
+          <input class="form-input" id="hero-resources" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="hero-news">ประชาสัมพันธ์ — URL รูป</label>
+          <input class="form-input" id="hero-news" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="hero-contact">ติดต่อ — URL รูป</label>
+          <input class="form-input" id="hero-contact" type="url"/>
+        </div>
+        <button class="btn-save" onclick="saveHeroes()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          บันทึก Hero
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ CONTACT ══ -->
+    <div class="admin-panel" id="panel-contact">
+      <div class="admin-header">
+        <h1>หน้าติดต่อ</h1>
+        <p>ลิงก์และการตั้งค่าฟอร์มติดต่อ — ข้อความอื่น ๆ แก้ได้ในแท็บ "ข้อความ UI"</p>
+      </div>
+      <div class="admin-section">
+        <div class="admin-section-title">ลิงก์</div>
+        <div class="form-group">
+          <label class="form-label" for="ct-fb">Facebook Page URL</label>
+          <input class="form-input" id="ct-fb" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ct-maps">Google Maps URL</label>
+          <input class="form-input" id="ct-maps" type="url"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ct-web">เว็บไซต์ / Google Sites URL</label>
+          <input class="form-input" id="ct-web" type="url"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="ct-phone">เบอร์โทรศัพท์</label>
+            <input class="form-input" id="ct-phone" type="text"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ct-email">อีเมลติดต่อ</label>
+            <input class="form-input" id="ct-email" type="email"/>
+          </div>
+        </div>
+        <div class="admin-section-title" style="margin-top:12px">EmailJS (ฟอร์มส่งข้อความ)</div>
+        <div class="form-group">
+          <label class="form-label" for="ct-ej-pk">Public Key</label>
+          <input class="form-input" id="ct-ej-pk" type="text"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="ct-ej-svc">Service ID</label>
+            <input class="form-input" id="ct-ej-svc" type="text"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ct-ej-tpl">Template ID</label>
+            <input class="form-input" id="ct-ej-tpl" type="text"/>
+          </div>
+        </div>
+        <button class="btn-save" onclick="saveContact()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          บันทึกหน้าติดต่อ
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="../assets/js/cms.js?v=28"></script>
+<script src="../assets/js/i18n.js"></script>
+<script src="admin.js?v=6"></script>
+</body>
+</html>

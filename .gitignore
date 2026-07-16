@@ -1,0 +1,11 @@
+.DS_Store
+**/Icon?
+**/Icon
+.claude/
+.env
+.env.*
+!.env.example
+backend/node_modules/
+*.log
+.vscode/
+.idea/

@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>เกี่ยวกับเรา | PDS OCC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/style.css?v=50"/>
+  <style>
+    /* ── About page extra styles ── */
+
+    /* ── HERO ── */
+    .page-hero {
+      min-height: 440px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 100px var(--px) 72px;
+      position: relative; overflow: hidden;
+      text-align: center;
+      background:
+        linear-gradient(160deg, rgba(10,6,28,.92) 0%, rgba(30,18,65,.88) 55%, rgba(50,25,72,.85) 100%),
+        url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&q=80') center 40% / cover no-repeat;
+    }
+    .page-hero-bg { display: none; }
+    /* cinematic overlay */
+    .page-hero::before {
+      z-index: 1;
+      background:
+        radial-gradient(ellipse at 30% 70%, rgba(105,88,166,.30) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(199,132,183,.20) 0%, transparent 50%);
+    }
+    /* subtle bottom fade */
+    .page-hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 48px; z-index: 2;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,.15) 100%);
+    }
+    .page-hero > * { position: relative; z-index: 3; }
+
+    .page-hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(199,132,183,.9); border: 1px solid rgba(199,132,183,.3);
+      background: rgba(199,132,183,.1); backdrop-filter: blur(6px);
+      padding: 6px 18px; border-radius: var(--r-pill); margin-bottom: 24px;
+    }
+    .page-hero-title {
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      font-weight: 800; letter-spacing: -.04em; line-height: 1.08;
+      color: #fff; margin-bottom: 18px;
+      text-shadow: 0 2px 24px rgba(0,0,0,.3);
+    }
+    .page-hero-sub {
+      font-size: clamp(.875rem, 1.4vw, 1rem);
+      color: rgba(255,255,255,.5); line-height: 1.85;
+      max-width: 440px; margin: 0 auto;
+    }
+    .hero-divider {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-top: 36px;
+    }
+    .hero-divider-line { width: 36px; height: 1px; background: rgba(255,255,255,.18); }
+    .hero-divider-dot  { width: 5px; height: 5px; border-radius: 50%; background: var(--pink-m); opacity: .65; }
+
+    /* ── PHILOSOPHY (FULL WIDTH QUOTE) ── */
+    .philosophy-block {
+      background:
+        radial-gradient(ellipse at 10% 50%, rgba(105,88,166,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 50%, rgba(199,132,183,.06) 0%, transparent 55%),
+        var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 64px var(--px);
+    }
+    .philosophy-inner {
+      max-width: 780px; margin: 0 auto; text-align: center;
+    }
+    .phil-badge {
+      display: inline-flex; align-items: center;
+      font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: #fff; background: linear-gradient(90deg, #6958a6, #c784b7);
+      padding: 5px 14px; border-radius: var(--r-pill); margin-bottom: 28px;
+    }
+    .phil-badge::before { display: none; }
+    .phil-quote-mark {
+      font-size: 6rem; line-height: .8; font-weight: 900;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      display: block; margin-bottom: -12px; opacity: .3;
+      font-family: Georgia, serif;
+    }
+    .phil-text {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 700;
+      color: var(--text); line-height: 1.75; letter-spacing: -.01em;
+      margin-bottom: 28px;
+    }
+    .phil-text em {
+      font-style: normal;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .phil-rule {
+      width: 48px; height: 3px; background: var(--grad);
+      border-radius: 999px; margin: 0 auto 20px;
+    }
+    .phil-sub {
+      font-size: .85rem; color: #282727; line-height: 1.8;
+    }
+
+    /* ── VISION + MISSION ── */
+    .vm-section {
+      background: #ffffff;
+      padding: 0 var(--px);
+    }
+    .vm-inner { max-width: var(--max-w); margin: 0 auto; }
+
+    /* Header: centered */
+    .vm-header {
+      text-align: center; margin-bottom: 40px;
+    }
+    .vm-header-tagline {
+      font-size: .9rem; color: var(--text-3); line-height: 1.8;
+      max-width: 520px; margin: 8px auto 0;
+    }
+
+    /* Vision Strip — full-bleed brand-gradient drench, statement as hero */
+    .vision-banner {
+      position: relative; overflow: hidden; isolation: isolate;
+      background:
+        radial-gradient(115% 130% at 82% 12%, rgba(223,168,212,.42) 0%, transparent 52%),
+        radial-gradient(110% 130% at 8% 92%, rgba(105,88,166,.50) 0%, transparent 55%),
+        linear-gradient(152deg, #16122b 0%, #241d4a 46%, #432c63 100%);
+    }
+    .vm-mission-only {
+      background: #ffffff !important;
+      padding-top: 52px;
+      padding-bottom: 80px;
+      border-bottom: 1px solid #e8e4f4;
+    }
+    .mission-section-head {
+      text-align: center; margin-bottom: 36px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .mission-section-eyebrow {
+      display: inline-flex; align-items: center;
+      font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: #fff; background: linear-gradient(90deg, #6958a6, #c784b7);
+      padding: 5px 14px; border-radius: var(--r-pill);
+    }
+    .mission-section-label {
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem); font-weight: 800;
+      letter-spacing: -.03em; color: var(--text); line-height: 1.1;
+    }
+    .mission-section-title { display: none; }
+    /* fine top sheen so the band reads as lit, not flat */
+    .vision-banner::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.07) 0%, transparent 50%);
+    }
+    .vision-banner::after {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      opacity: .22;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1' opacity='.55'%3E%3Cpath d='M0 40h48M48 40v32M48 72h36M84 72V48M84 48h76'/%3E%3Cpath d='M24 128h72M96 128V96M96 96h64'/%3E%3Cpath d='M120 0v28M120 28h40'/%3E%3Cpath d='M8 88h20M28 88v24'/%3E%3C/g%3E%3Cg fill='%23ffffff' opacity='.45'%3E%3Ccircle cx='48' cy='40' r='3'/%3E%3Ccircle cx='84' cy='72' r='3'/%3E%3Ccircle cx='96' cy='128' r='3'/%3E%3Ccircle cx='120' cy='28' r='3'/%3E%3Crect x='14' y='14' width='10' height='10' rx='2' opacity='.35'/%3E%3Crect x='118' y='98' width='12' height='12' rx='2' opacity='.35'/%3E%3C/g%3E%3C/svg%3E"),
+        radial-gradient(circle at center, rgba(255,255,255,.18) 1px, transparent 1px);
+      background-size: 160px 160px, 28px 28px;
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, #000 30%, transparent 100%);
+    }
+    .vb-bg { display: none; }
+    .vb-inner {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 80px var(--px) 76px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 0;
+    }
+    .vb-eyebrow {
+      display: inline-flex; align-items: center;
+      font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: #fff; background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      padding: 5px 14px; border-radius: var(--r-pill); margin-bottom: 8px;
+      backdrop-filter: blur(6px);
+    }
+    .vb-label {
+      display: inline-flex; align-items: center;
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem); font-weight: 800; letter-spacing: -.03em;
+      color: #fff; line-height: 1.1;
+      white-space: nowrap; margin-bottom: 20px;
+    }
+    .vb-label::before { display: none; }
+    .vb-divider {
+      width: 40px; height: 2px;
+      background: linear-gradient(90deg, rgba(199,132,183,.5), rgba(105,88,166,.3));
+      border-radius: 2px; margin-bottom: 24px;
+    }
+    .vb-text-wrap { width: 100%; }
+    .vb-heading {
+      font-size: 1rem; font-weight: 700;
+      color: rgba(255,255,255,.9); line-height: 1.9; margin-bottom: 0;
+      letter-spacing: 0;
+    }
+    .vb-sub {
+      font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.75); line-height: 1.9;
+      max-width: 560px; margin: 0 auto;
+    }
+    @media (max-width: 720px) {
+      .vb-inner { padding: 48px var(--px) 44px; }
+      .vb-heading { font-size: 1.1rem; }
+    }
+
+    /* Mission cards — clean card style matching reference image */
+    .mission-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+      padding-bottom: 8px;
+    }
+    .mission-card {
+      background: #ffffff;
+      border: 1.5px solid #e8e2f6;
+      border-radius: 20px; padding: 44px 28px 40px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      transition: all .26s var(--ease);
+      box-shadow: 0 4px 24px rgba(105,88,166,.08);
+      position: relative; overflow: hidden;
+    }
+    .mission-card::before { display: none; }
+    .mission-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--mc-c1, #6958a6), var(--mc-c2, #c784b7));
+      opacity: 0; transition: opacity .24s;
+    }
+    /* hover / touch → fill with brand color, invert content */
+    .mission-card:hover {
+      transform: translateY(-7px);
+      background: linear-gradient(150deg, #6958a6 0%, #97589f 52%, #c784b7 100%);
+      border-color: transparent;
+      box-shadow: 0 22px 50px rgba(105,88,166,.30);
+    }
+    .mission-card:hover::after { opacity: 0; }
+    .mission-card:hover .mc-title { color: #fff; }
+    .mission-card:hover .mc-text { color: rgba(255,255,255,.86); }
+    .mission-card:hover .mc-icon-wrap svg * { stroke: #fff; }
+    .mc-icon-wrap {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      transition: transform .24s;
+    }
+    .mission-card:hover .mc-icon-wrap { transform: scale(1.1) translateY(-2px); }
+    .mc-icon-wrap svg {
+      width: 36px; height: 36px;
+      stroke-width: 1.5;
+    }
+    /* gradient stroke via linearGradient in each SVG; transitions to white on hover */
+    .mc-icon-wrap svg * { transition: stroke .24s var(--ease); }
+    .mc-title {
+      font-size: 1rem; font-weight: 700; color: #1e1a36;
+      margin-bottom: 10px; letter-spacing: -.01em;
+      transition: color .24s var(--ease);
+    }
+    .mc-text {
+      font-size: .8rem; color: #7b7898; line-height: 1.8;
+      transition: color .24s var(--ease);
+    }
+    @media (max-width: 860px) {
+      .mission-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .mission-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── VALUES STRIP ── */
+    .values-strip {
+      background: var(--surface); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 40px var(--px);
+    }
+    .values-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center;
+    }
+    .vs-label-col .sec-label { margin-bottom: 6px; }
+    .vs-label-col .sec-title { font-size: 1.2rem; }
+    .values-list {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .value-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: var(--r);
+      background: var(--bg); border: 1px solid var(--border);
+      font-size: .82rem; font-weight: 600; color: var(--text-2);
+      transition: all .15s;
+    }
+    .value-chip:hover { border-color: var(--pink); color: var(--pink); background: var(--pink-s); transform: translateY(-1px); }
+    .value-chip-icon {
+      width: 22px; height: 22px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--vc-bg, var(--blue-s)); flex-shrink: 0;
+    }
+    .value-chip-icon svg { width: 12px; height: 12px; color: var(--vc-ic, var(--blue)); }
+    @media (max-width: 700px) {
+      .values-inner { grid-template-columns: 1fr; gap: 20px; }
+    }
+
+    @media (max-width: 860px) {
+      .vb-items { grid-template-columns: 1fr; }
+      .vb-item:not(:last-child)::after { right: auto; top: auto; bottom: 0; left: 20%; right: 20%; width: auto; height: 1px; }
+      .mission-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .mission-row { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Faculty section (merged from faculty page) ── */
+    .faculty-page { background: #ffffff; padding: 72px var(--px) 88px; }
+    .faculty-inner { max-width: var(--max-w); margin: 0 auto; }
+
+    .director-row { display: flex; justify-content: center; margin-bottom: 32px; }
+    .senior-row { display: flex; justify-content: center; gap: 24px; margin-bottom: 48px; flex-wrap: wrap; }
+
+    .director-card {
+      width: 272px; background: #fff; border: 1.5px solid #e8e2f6;
+      border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(105,88,166,.07);
+      transition: transform .26s var(--ease), box-shadow .26s var(--ease); position: relative;
+    }
+    .director-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 2;
+      background: linear-gradient(90deg, #6958a6, #c784b7);
+    }
+    .director-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(105,88,166,.14); border-color: #c8bef0; }
+    .dc-photo {
+      width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #ddd8f6 0%, #f0e4f6 100%);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .dc-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.08); transform-origin: top center; }
+    .fc-email {
+      display: inline-flex; align-items: center; gap: 5px; font-size: .72rem; color: #6958a6;
+      margin-top: 10px; text-decoration: none; font-weight: 600; transition: color .2s;
+    }
+    .fc-email:hover { color: #c784b7; }
+    .fc-email svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .dc-info { padding: 18px 20px 22px; text-align: center; }
+    .dc-role { font-size: .6rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: #6958a6; display: block; margin-bottom: 6px; }
+    .dc-name { font-size: .98rem; font-weight: 800; color: #1e1a36; line-height: 1.3; margin-bottom: 4px; }
+    .dc-dept { font-size: .73rem; color: #8c88a8; line-height: 1.55; }
+
+    .senior-card {
+      width: 272px; background: #fff; border: 1.5px solid #e8e2f6; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(105,88,166,.07); transition: transform .26s var(--ease), box-shadow .26s var(--ease); position: relative;
+    }
+    .senior-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 2; background: linear-gradient(90deg, #6958a6, #c784b7); }
+    .senior-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(105,88,166,.14); border-color: #c8bef0; }
+    .sc-photo { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #ddd8f6 0%, #f0e4f6 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .sc-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.08); transform-origin: top center; }
+    .sc-info { padding: 18px 20px 22px; text-align: center; }
+    .sc-role { font-size: .6rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: #6958a6; display: block; margin-bottom: 6px; }
+    .sc-name { font-size: .98rem; font-weight: 800; color: #1e1a36; line-height: 1.3; margin-bottom: 4px; }
+    .sc-dept { font-size: .73rem; color: #8c88a8; line-height: 1.55; }
+
+    .teacher-grid-new { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .teacher-card-new {
+      background: #fff; border: 1.5px solid #e8e2f6; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 2px 14px rgba(105,88,166,.06); transition: transform .24s var(--ease), box-shadow .24s var(--ease); position: relative;
+    }
+    .teacher-card-new::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 2; opacity: 0; background: linear-gradient(90deg, #6958a6, #c784b7); transition: opacity .24s; }
+    .teacher-card-new:hover::before { opacity: 1; }
+    .teacher-card-new:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(105,88,166,.13); border-color: #c8bef0; }
+    .tc-photo { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #ddd8f6 0%, #f0e4f6 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .tc-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.25); transform-origin: top center; }
+    .tc-info { padding: 12px 14px 16px; }
+      display: inline-block; font-size: .58rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      color: #6958a6; background: #f0edfb; border: 1px solid #ddd8f0; border-radius: var(--r-pill); padding: 3px 10px; margin-bottom: 6px;
+    }
+    .tc-name-new { font-size: .88rem; font-weight: 800; color: #1e1a36; line-height: 1.3; }
+
+    .f-page-header { text-align: center; margin-bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .f-page-eyebrow {
+      display: inline-flex; align-items: center; font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: var(--r-pill); color: #fff; background: linear-gradient(90deg, #6958a6, #c784b7);
+    }
+    .f-page-title { font-size: clamp(1.4rem, 2.5vw, 1.85rem); font-weight: 800; color: #1e1a36; letter-spacing: -.03em; line-height: 1.1; }
+
+    @media (max-width: 900px) { .teacher-grid-new { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) {
+      .director-card { width: min(280px, 80%); }
+      .senior-card { width: calc(50% - 12px); }
+      .teacher-grid-new { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="common.skip">ข้ามไปยังเนื้อหาหลัก</a>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Patumwan_Demonstration_School%2C_SWU_Logo.svg"
+           alt="โลโก้ โรงเรียนสาธิตปทุมวัน" class="navbar-logo" width="62" height="62"/>
+      <div class="navbar-divider" aria-hidden="true"></div>
+      <div class="navbar-brand-text">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT26HbaXKTEB1oR4znYW8lmNjJ_E5_dR2PcKyJkSpIlhQEO_Pq13FTlv-0X&s=10"
+             alt="โลโก้กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิตมหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน" class="navbar-text-logo"/>
+      </div>
+    </a>
+    <nav class="navbar-nav" id="nav" aria-label="เมนูหลัก">
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle active" href="about.html" data-i18n="nav.about" aria-haspopup="true" aria-expanded="false">เกี่ยวกับเรา<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.about">เกี่ยวกับเรา</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#philosophy" data-i18n="nav.sub.philosophy">ปรัชญา</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#vision" data-i18n="nav.sub.vision">วิสัยทัศน์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#mission" data-i18n="nav.sub.mission">พันธกิจ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="about.html#faculty" data-i18n="nav.sub.faculty">บุคลากร</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="curriculum.html" data-i18n="nav.curriculum" aria-haspopup="true" aria-expanded="false">หลักสูตร<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.curriculum">หลักสูตร</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-1" data-i18n="nav.sub.grade1">มัธยมศึกษาปีที่ 1</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-2" data-i18n="nav.sub.grade2">มัธยมศึกษาปีที่ 2</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-3" data-i18n="nav.sub.grade3">มัธยมศึกษาปีที่ 3</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-4" data-i18n="nav.sub.grade4">มัธยมศึกษาปีที่ 4</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-5" data-i18n="nav.sub.grade5">มัธยมศึกษาปีที่ 5</a>
+          <a class="nav-dropdown-link" role="menuitem" href="curriculum.html#grade-6" data-i18n="nav.sub.grade6">มัธยมศึกษาปีที่ 6</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="resources.html" data-i18n="nav.resources" aria-haspopup="true" aria-expanded="false">แหล่งเรียนรู้<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.resources">แหล่งเรียนรู้</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-book" data-i18n="nav.sub.book">หนังสือ</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-website" data-i18n="nav.sub.website">เว็บไซต์</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-journal" data-i18n="nav.sub.journal">วารสาร</a>
+          <a class="nav-dropdown-link" role="menuitem" href="resources.html#res-research" data-i18n="nav.sub.research">งานวิจัย</a>
+        </div>
+      </div>
+      <div class="nav-item has-dropdown">
+        <a class="nav-link nav-link-toggle" href="news.html#pr-activities" data-i18n="nav.pr" aria-haspopup="true" aria-expanded="false">ประชาสัมพันธ์<svg class="nav-caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dropdown" role="menu">
+          <div class="nav-dropdown-head" data-i18n="nav.pr">ประชาสัมพันธ์</div>
+          <div class="nav-dropdown-divider"></div>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-activities" data-i18n="index.activity.title">กิจกรรม</a>
+          <a class="nav-dropdown-link" role="menuitem" href="news.html#pr-calendar" data-i18n="nav.sub.calendar">ปฏิทินกิจกรรม</a>
+        </div>
+      </div>
+      <a class="nav-link" href="contact.html" data-i18n="nav.contact">ติดต่อ</a>
+    </nav>
+    <div class="navbar-end">
+      <div class="lang-toggle" role="group" aria-label="เลือกภาษา">
+        <button class="lang-btn active" aria-pressed="true">TH</button>
+        <button class="lang-btn" aria-pressed="false">EN</button>
+      </div>
+      <button class="search-btn" aria-label="ค้นหา">
+        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+          <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <button class="hamburger" id="burger" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero" id="main" data-cms-hero="about">
+  <div class="page-hero-bg" aria-hidden="true"></div>
+  <div class="page-hero-eyebrow" data-i18n="about.hero.eyebrow">About Us</div>
+  <h1 class="page-hero-title" data-i18n="about.hero.title">เกี่ยวกับเรา</h1>
+  <p class="page-hero-sub" data-i18n="about.hero.sub">ปรัชญา วิสัยทัศน์ พันธกิจ</p>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <div class="hero-divider-dot"></div>
+    <div class="hero-divider-line"></div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy-block reveal" id="philosophy">
+  <div class="philosophy-inner">
+    <div class="phil-badge" data-i18n="about.phil.badge">ปรัชญา · Philosophy</div>
+    <span class="phil-quote-mark" aria-hidden="true">"</span>
+    <p class="phil-text" data-i18n-html="about.phil.text">
+      <em>ความรู้และทักษะในงาน</em> สร้างเสริมประสบการณ์<em>ทักษะชีวิต</em>
+    </p>
+    <div class="phil-rule"></div>
+    <p class="phil-sub" data-i18n="about.phil.sub">
+      กลุ่มสาระเทคโนโลยีเชื่อมั่นว่า การเรียนรู้ที่มีคุณภาพต้องเชื่อมโยงทั้งความรู้เชิงวิชาการ
+      และประสบการณ์จริง เพื่อสร้างผู้เรียนที่มีทักษะพร้อมสำหรับโลกยุคใหม่
+    </p>
+  </div>
+</div>
+
+<!-- VISION BANNER: full-bleed gradient section -->
+<div class="vision-banner reveal" id="vision">
+  <div class="vb-bg" aria-hidden="true"></div>
+  <div class="vb-inner">
+    <span class="vb-eyebrow" data-i18n="about.vision.eyebrow">Vision</span>
+    <span class="vb-label" data-i18n="about.vision.label">วิสัยทัศน์</span>
+    <div class="vb-divider"></div>
+    <div class="vb-text-wrap">
+      <h3 class="vb-heading" data-i18n="about.vision.text">เป็นแหล่งเรียนรู้วิชาการ และฝึกฝนประสบการณ์วิชาอาชีพ เพื่อส่งเสริมพัฒนาการทักษะ
+และแสวงหาความก้าวหน้าตามความสันทัดส่วนตน อย่างคนมีศักยภาพ</h3>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION: 4 cards -->
+<div class="vm-section vm-mission-only" id="mission">
+  <div class="vm-inner">
+    <div class="mission-section-head reveal">
+      <span class="mission-section-eyebrow" data-i18n="about.mission.eyebrow">Mission</span>
+      <span class="mission-section-label" data-i18n="about.mission.label">พันธกิจ</span>
+    </div>
+    <div class="mission-row reveal">
+
+      <!-- Card 1: ส่งเสริมทักษะชีวิต -->
+      <div class="mission-card">
+        <div class="mc-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+            <defs>
+              <linearGradient id="ig1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6958a6"/>
+                <stop offset="100%" stop-color="#c784b7"/>
+              </linearGradient>
+            </defs>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#ig1)" stroke-width="1.5"/>
+            <circle cx="9" cy="7" r="4" stroke="url(#ig1)" stroke-width="1.5"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="url(#ig1)" stroke-width="1.5"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#ig1)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mc-title" data-i18n="about.mc1.title">ส่งเสริมทักษะชีวิต</div>
+        <p class="mc-text" data-i18n="about.mc1.text">พัฒนาทักษะที่จำเป็นสำหรับการดำรงชีวิตในโลกยุคใหม่อย่างมีประสิทธิภาพ</p>
+      </div>
+
+      <!-- Card 2: พัฒนาทักษะอาชีพ -->
+      <div class="mission-card">
+        <div class="mc-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+            <defs>
+              <linearGradient id="ig2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6958a6"/>
+                <stop offset="100%" stop-color="#c784b7"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="7" width="20" height="14" rx="2" stroke="url(#ig2)" stroke-width="1.5"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="url(#ig2)" stroke-width="1.5"/>
+            <line x1="12" y1="12" x2="12" y2="16" stroke="url(#ig2)" stroke-width="1.5"/>
+            <line x1="10" y1="14" x2="14" y2="14" stroke="url(#ig2)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mc-title" data-i18n="about.mc2.title">พัฒนาทักษะอาชีพ</div>
+        <p class="mc-text" data-i18n="about.mc2.text">เสริมสร้างความรู้และทักษะด้านการประกอบอาชีพในสาขาที่หลากหลาย</p>
+      </div>
+
+      <!-- Card 3: เทคโนโลยีดิจิทัล -->
+      <div class="mission-card">
+        <div class="mc-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+            <defs>
+              <linearGradient id="ig3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6958a6"/>
+                <stop offset="100%" stop-color="#c784b7"/>
+              </linearGradient>
+            </defs>
+            <polyline points="16 18 22 12 16 6" stroke="url(#ig3)" stroke-width="1.5"/>
+            <polyline points="8 6 2 12 8 18" stroke="url(#ig3)" stroke-width="1.5"/>
+            <path d="M14 4l-4 16" stroke="url(#ig3)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mc-title" data-i18n="about.mc3.title">เทคโนโลยีดิจิทัล</div>
+        <p class="mc-text" data-i18n="about.mc3.text">ฝึกทักษะด้านเทคโนโลยีสารสนเทศและดิจิทัล เพื่อรับมือโลกอนาคต</p>
+      </div>
+
+      <!-- Card 4: เสริมสร้างศักยภาพ -->
+      <div class="mission-card">
+        <div class="mc-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+            <defs>
+              <linearGradient id="ig4" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6958a6"/>
+                <stop offset="100%" stop-color="#c784b7"/>
+              </linearGradient>
+            </defs>
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="url(#ig4)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mc-title" data-i18n="about.mc4.title">เสริมสร้างศักยภาพ</div>
+        <p class="mc-text" data-i18n="about.mc4.text">พัฒนาผู้เรียนให้มีศักยภาพและค้นพบความถนัดตามความสนใจส่วนตน</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- FACULTY (merged from faculty page) -->
+<div class="faculty-page" id="faculty">
+  <div class="faculty-inner">
+
+    <!-- Hidden gradient definition shared by all person icons -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="pGradDef" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6958a6"/>
+          <stop offset="100%" stop-color="#c784b7"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="f-page-header reveal">
+      <span class="f-page-eyebrow" data-i18n="faculty.sec.eyebrow">Administration</span>
+      <h2 class="f-page-title" data-i18n="faculty.sec.title">โครงสร้างการบริหารงาน ปีการศึกษา 2569 – 2571</h2>
+    </div>
+    <!-- แถว 1: ผู้อำนวยการ -->
+    <div class="director-row reveal">
+      <div class="director-card" id="cmsDirectorCard">
+        <div class="dc-photo">
+          <img src="assets/img/ผู้บริหาร -โชติวิทย์ ธรรมสุจิตร_08.png" alt="โชติวิทย์ ธรรมสุจิตร">
+        </div>
+        <div class="dc-info">
+          <span class="dc-role" data-i18n="faculty.director.role">ผู้อำนวยการ</span>
+          <div class="dc-name">โชติวิทย์ ธรรมสุจิตร</div>
+          <div class="dc-dept" data-i18n="faculty.director.dept">ผู้อำนวยการโรงเรียนสาธิตมหาวิทยาลัยศรีนครินทรวิโรฒ ปทุมวัน</div>
+          <a href="mailto:director@pds.ac.th" class="fc-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            director@pds.ac.th
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- แถว 2: รองวิชาการ & หัวหน้ากลุ่มสาระ -->
+    <div class="senior-row">
+      <div class="senior-card reveal" style="--i:1" id="cmsDeputyCard">
+        <div class="sc-photo">
+          <img src="assets/img/ผู้บริหาร-อ.สุนทร ภูรีปรีชาเลิศ_02.png" alt="นายสุนทร ภูรีปรีชาเลิศ">
+        </div>
+        <div class="sc-info">
+          <span class="sc-role" data-i18n="faculty.deputy.role">รองผู้อำนวยการ</span>
+          <div class="sc-name">นายสุนทร ภูรีปรีชาเลิศ</div>
+          <div class="sc-dept" data-i18n="faculty.deputy.dept">รองผู้อำนวยการฝ่ายวิชาการวิจัย และพันธกิจสัมพันธ์เพื่อสังคม</div>
+          <a href="mailto:deputy@pds.ac.th" class="fc-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            deputy@pds.ac.th
+          </a>
+        </div>
+      </div>
+      <div class="senior-card reveal" style="--i:2" id="cmsHeadCard">
+        <div class="sc-photo">
+          <img src="assets/img/การงานอาชีพ  - อ.ปรเมษฐ์ คำจร_01.png" alt="อาจารย์ปรเมษฐ์ คำจร">
+        </div>
+        <div class="sc-info">
+          <span class="sc-role" data-i18n="faculty.head.role">หัวหน้ากลุ่มสาระ</span>
+          <div class="sc-name">อาจารย์ปรเมษฐ์ คำจร</div>
+          <div class="sc-dept" data-i18n="faculty.head.dept">หัวหน้ากลุ่มสาระการเรียนรู้เทคโนโลยี</div>
+          <a href="mailto:head@pds.ac.th" class="fc-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            head@pds.ac.th
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- แถว 3: คณาจารย์ -->
+    <div class="f-sec-head reveal">
+      <div class="f-sec-rule"></div>
+    </div>
+
+    <div class="teacher-grid-new" id="teacherGrid">
+      <div class="teacher-card-new reveal" style="--i:1">
+        <div class="tc-photo"><img src="assets/img/ผู้บริหาร - อ.กิตติศักดิ์ นิทาน_01.png" alt="อาจารย์กิตติศักดิ์ นิทาน"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์กิตติศักดิ์ นิทาน</div>
+          <a href="mailto:kittisak@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>kittisak@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:2">
+        <div class="tc-photo"><img src="assets/img/การงานอาชีพ - อ.เสกสรรค์ หงษ์หิรัญพันธ์_01.png" alt="อาจารย์เสกสรรค์ หงษ์หิรัญพันธ์"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์เสกสรรค์ หงษ์หิรัญพันธ์</div>
+          <a href="mailto:seksun@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>seksun@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:3">
+        <div class="tc-photo"><img src="assets/img/การงานอาชีพ - อ.ณภัสวรรก์ สุภาแสน_01.png" alt="อาจารย์ณภัสวรรก์ สุภาแสน"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์ณภัสวรรก์ สุภาแสน</div>
+          <a href="mailto:naphaswank@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>naphaswank@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:4">
+        <div class="tc-photo"><img src="assets/img/การงานอาชีพ-อ.กรวิชญ์ โสภา_02.png" alt="อาจารย์กรวิชญ์ โสภา"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์กรวิชญ์ โสภา</div>
+          <a href="mailto:kornvich@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>kornvich@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:5">
+        <div class="tc-photo"><img src="assets/img/อาจารย์ ดิเรก พรหมสาขา ณ สกลนคร 01.png" alt="อาจารย์ดิเรก พรหมสาขา ณ สกลนคร"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์ดิเรก พรหมสาขา ณ สกลนคร</div>
+          <a href="mailto:direk@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>direk@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:6">
+        <div class="tc-photo"><img src="assets/img/ปริยากร  พรสุทธิพันธุ์ 2.png" alt="อาจารย์ปริยากร พรสุทธิพันธุ์"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์ปริยากร พรสุทธิพันธุ์</div>
+          <a href="mailto:pariyakorn@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>pariyakorn@pds.ac.th</a>
+        </div>
+      </div>
+      <div class="teacher-card-new reveal" style="--i:7">
+        <div class="tc-photo"><img src="assets/img/กิตติญา-removebg-preview.png" alt="อาจารย์กิตติญา กูลดี"></div>
+        <div class="tc-info">
+          <div class="tc-name-new">อาจารย์กิตติญา กูลดี</div>
+          <a href="mailto:kittiya@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>kittiya@pds.ac.th</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-name" data-i18n="footer.name">กลุ่มสาระการเรียนรู้เทคโนโลยี โรงเรียนสาธิต มศว ปทุมวัน</div>
+  <div class="footer-sub">Copyright © 2026 (Computer Department of Patumwan Demonstrations School) All rights reserved.</div>
+</footer>
+<script src="assets/js/cms.js?v=28"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/script.js?v=40"></script>
+</body>
+</html>
