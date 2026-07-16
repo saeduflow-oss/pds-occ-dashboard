@@ -372,7 +372,7 @@ async function addNewsFromLink() {
   btn.disabled = true;
   let title = '', image = '';
   try {
-    const FB_PROXY = (CMS.getSite().fb_api_url || 'https://pds-occ-fb-proxy.onrender.com').replace(/\/$/, '');
+    const FB_PROXY = (CMS.getSite().fb_api_url || 'https://pds-occ-fb-proxy-owe6.onrender.com').replace(/\/$/, '');
     const res  = await fetch(`${FB_PROXY}/api/oembed?url=${encodeURIComponent(url)}`);
     const data = await res.json();
     title = data.title || '';

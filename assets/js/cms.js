@@ -13,7 +13,7 @@ const DEFAULT_DATA = {
     vision: 'เป็นแหล่งเรียนรู้วิชาการ และฝึกฝนประสบการณ์วิชาอาชีพ เพื่อส่งเสริมพัฒนาการทักษะ และแสวงหาความก้าวหน้าตามความสันทัดส่วนตน อย่างคนมีศักยภาพ',
     mission: 'ส่งเสริมทักษะชีวิต ทักษะอาชีพ เทคโนโลยีดิจิทัล และศักยภาพส่วนตนให้แก่นักเรียน',
     fb_page: 'https://www.facebook.com/pdsocc/',
-    fb_api_url: 'https://pds-occ-fb-proxy.onrender.com'
+    fb_api_url: 'https://pds-occ-fb-proxy-owe6.onrender.com'
   },
   slider: [
     {

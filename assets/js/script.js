@@ -228,7 +228,7 @@ function renderIndexFromCMS() {
   const newsGrid = document.getElementById('newsGrid');
   if (newsGrid) {
     const site      = CMS.getSite();
-    const FB_PROXY  = 'https://pds-occ-fb-proxy.onrender.com';
+    const FB_PROXY  = 'https://pds-occ-fb-proxy-owe6.onrender.com';
     const fbApiUrl  = (site.fb_api_url || FB_PROXY).replace(/\/$/, '');
 
     // Show loading state
