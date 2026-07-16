@@ -272,10 +272,11 @@ function paintIndexNews(posts) {
   const placeholderDesc  = cmsT('index.news.placeholder.desc', 'กำลังรออัปเดตโพสต์ล่าสุดจาก Facebook');
   const livePosts = posts.slice(0, 4);
   const placeholders = Array.from({ length: Math.max(0, 4 - livePosts.length) });
+  const cssUrl = (u) => String(u).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
   const liveCards = livePosts.map((p, i) => {
     const imgStyle = p.image
-      ? `background-image:url('${p.image}');background-size:cover;background-position:center`
+      ? `background-image:url('${cssUrl(p.image)}');background-size:cover;background-position:center`
       : '';
     return `
       <a class="news-img-card reveal" style="--i:${i+1}" href="${p.link}" target="_blank" rel="noreferrer">

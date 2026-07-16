@@ -41,6 +41,27 @@ function truncate(str, max = 140) {
   return str.length > max ? str.slice(0, max).trimEnd() + '…' : str;
 }
 
+/** Pick display image from a Graph API post.
+ *  Multi-photo albums put real photos in subattachments — always use the first one.
+ *  Prefer first photo over full_picture (which is often empty/broken for albums). */
+function pickPostImage(p) {
+  const atts = p.attachments?.data || [];
+  for (const att of atts) {
+    const subs = att.subattachments?.data || [];
+    if (subs.length > 0) {
+      for (const sub of subs) {
+        const src = sub?.media?.image?.src;
+        if (src) return src;
+      }
+    }
+  }
+  for (const att of atts) {
+    const src = att?.media?.image?.src;
+    if (src) return src;
+  }
+  return p.full_picture || '';
+}
+
 // ── Main endpoint ─────────────────────────────────
 app.get('/api/posts', async (req, res) => {
   if (!PAGE_ID || !ACCESS_TOKEN) {
@@ -62,7 +83,8 @@ app.get('/api/posts', async (req, res) => {
       'full_picture',
       'permalink_url',
       'created_time',
-      'attachments{media,description,subattachments}'
+      // media_type + subattachments needed for multi-photo (album) posts
+      'attachments{media_type,type,media,description,url,subattachments{media_type,media,type,url}}'
     ].join(',');
 
     let apiUrl = `https://graph.facebook.com/v19.0/${PAGE_ID}/posts`
@@ -85,15 +107,7 @@ app.get('/api/posts', async (req, res) => {
     const posts = (fbJson.data || [])
       .filter(p => p.message || p.story)
       .map((p, i) => {
-        // Best image: full_picture → first attachment → subattachment
-        let image = p.full_picture || '';
-        if (!image) {
-          const att = p.attachments?.data?.[0];
-          image = att?.media?.image?.src
-            || att?.subattachments?.data?.[0]?.media?.image?.src
-            || '';
-        }
-
+        const image = pickPostImage(p);
         const rawText = p.message || p.story || '';
 
         return {
