@@ -241,12 +241,17 @@ function renderIndexFromCMS() {
     const ctrl = new AbortController();
     const tid  = setTimeout(() => ctrl.abort(), 50000);
 
-    fetch(`${fbApiUrl}/api/posts?limit=4`, { signal: ctrl.signal })
+    // Fetch extra posts so we can prefer ones with images (status updates often have none)
+    fetch(`${fbApiUrl}/api/posts?limit=12`, { signal: ctrl.signal })
       .then(r => { clearTimeout(tid); return r.json(); })
       .then(data => {
         if (!data.posts || !data.posts.length) throw new Error('empty');
-        window.__pdsNewsPosts = data.posts;   // cache for language re-render
-        paintIndexNews(data.posts);
+        const withImg = data.posts.filter(p => p.image);
+        const chosen = (withImg.length >= 4 ? withImg : [...withImg, ...data.posts.filter(p => !p.image)])
+          .filter((p, i, arr) => arr.findIndex(x => x.id === p.id) === i)
+          .slice(0, 4);
+        window.__pdsNewsPosts = chosen.length ? chosen : data.posts.slice(0, 4);
+        paintIndexNews(window.__pdsNewsPosts);
       })
       .catch(() => {
         clearTimeout(tid);

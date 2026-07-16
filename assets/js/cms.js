@@ -446,6 +446,10 @@ const CMS = {
       merged.curriculum = backfillCurriculum(merged.curriculum, DEFAULT_DATA.curriculum);
       merged.activities = backfillActivities(merged.activities, DEFAULT_DATA.activities);
       merged.calendar = backfillCalendar(merged.calendar, DEFAULT_DATA.calendar);
+      // Migrate retired FB proxy URL saved in older localStorage
+      if (merged.site && merged.site.fb_api_url === 'https://pds-occ-fb-proxy.onrender.com') {
+        merged.site.fb_api_url = DEFAULT_DATA.site.fb_api_url;
+      }
       return merged;
     } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
   },
