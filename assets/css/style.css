@@ -1675,6 +1675,10 @@ button.ev-day:hover { background: #faf9fd; }
 .ev-row-meta {
   font-size: .82rem; color: #777; line-height: 1.5;
 }
+.ev-row-attach {
+  display: inline-block; margin-top: 6px; font-size: .78rem;
+  color: var(--blue); text-decoration: underline;
+}
 .ev-row-chev {
   flex-shrink: 0; color: #bbb;
 }
@@ -2180,6 +2184,13 @@ html.mourning .mourn-ribbon-fab {
 .act-detail-body a:hover { text-decoration: underline; }
 .act-detail-body p { margin: 0 0 1.1em; }
 .act-detail-body p:last-child { margin-bottom: 0; }
+.act-detail-attach {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 20px; padding: 8px 16px; border-radius: 999px;
+  background: #f0f0f2; color: #5c5c6e; font-size: .82rem; font-weight: 600;
+  text-decoration: none;
+}
+.act-detail-attach:hover { background: #e4e4ea; }
 
 @media (max-width: 640px) {
   .act-detail-main { padding-top: var(--nav-h); }

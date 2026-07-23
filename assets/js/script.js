@@ -824,7 +824,8 @@ function resolveActivityDetail() {
     return act ? { ...act } : null;
   }
   if (calId) {
-    const cal = CMS.getCalendar().find(c => String(c.id) === calId);
+    const calEvents = (typeof SheetCalendar !== 'undefined') ? SheetCalendar.getCached() : [];
+    const cal = calEvents.find(c => String(c.id) === calId);
     if (!cal) return null;
     if (cal.activityId) {
       const act = CMS.getActivities().find(a => a.id === cal.activityId) || {};
@@ -874,10 +875,17 @@ function renderActivityDetail() {
   const root = document.getElementById('activityDetail');
   if (!root || typeof CMS === 'undefined') return;
 
+  const params = new URLSearchParams(location.search);
+  if (params.get('cal') && typeof SheetCalendar !== 'undefined' && !root.dataset.sheetLoaded) {
+    root.dataset.sheetLoaded = '1';
+    SheetCalendar.load().then(() => renderActivityDetail());
+  }
+
   const item = resolveActivityDetail();
   const actLabel = cmsT('index.activity.title', 'กิจกรรม');
   const pubPrefix = cmsT('act.detail.published', 'ประกาศวันที่');
   const notFound = cmsT('act.detail.notFound', 'ไม่พบกิจกรรมที่ต้องการ');
+  const attachLabel = cmsT('cal.attachment', 'เอกสารแนบ');
 
   if (!item) {
     root.innerHTML = `<p class="act-detail-empty">${notFound}</p>`;
@@ -894,6 +902,9 @@ function renderActivityDetail() {
   const imgHtml = item.image
     ? `<div class="act-detail-hero"><img src="${item.image}" alt="" loading="lazy"/></div>`
     : `<div class="act-detail-hero act-detail-hero--fallback ${item.bg || 'ni-1'}"></div>`;
+  const attachHtml = item.link
+    ? `<a class="act-detail-attach reveal" href="${item.link}" target="_blank" rel="noreferrer">📎 ${attachLabel}</a>`
+    : '';
 
   document.title = `${title} | PDS OCC`;
 
@@ -915,7 +926,8 @@ function renderActivityDetail() {
       <div class="act-detail-datebox-label">${dateLabel}</div>
       <div class="act-detail-datebox-value">${dateRange}</div>
     </div>` : ''}
-    <div class="act-detail-body reveal">${bodyHtml}</div>`;
+    <div class="act-detail-body reveal">${bodyHtml}</div>
+    ${attachHtml}`;
 
   root.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 }
@@ -1056,7 +1068,18 @@ function weekEventSegments(events, weekDays) {
 
 function renderCalendarFromCMS() {
   const root = document.getElementById('calendarRoot');
-  if (!root || typeof CMS === 'undefined') return;
+  if (!root || typeof SheetCalendar === 'undefined') return;
+
+  const cached = SheetCalendar.getCached();
+  if (cached.length) renderCalendarBoard(cached);
+  else root.innerHTML = `<div style="text-align:center;padding:32px;color:#999;font-size:.85rem">${cmsT('cal.loading', 'กำลังโหลด…')}</div>`;
+
+  SheetCalendar.load().then(events => renderCalendarBoard(events));
+}
+
+function renderCalendarBoard(events) {
+  const root = document.getElementById('calendarRoot');
+  if (!root) return;
 
   const now = new Date();
   if (calViewYear == null) {
@@ -1065,7 +1088,7 @@ function renderCalendarFromCMS() {
     calSelectedISO = null;
   }
 
-  const events = CMS.getCalendar().filter(e => e.date);
+  events = events.filter(e => e.date);
   const y = calViewYear;
   const m = calViewMonth;
   const daysInMonth = new Date(y, m + 1, 0).getDate();
@@ -1127,22 +1150,28 @@ function renderCalendarFromCMS() {
   if (calSelectedISO) listEvents = listEvents.filter(ev => eventOnDay(ev, calSelectedISO));
 
   const chev = `<svg class="ev-row-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>`;
-  const catLabel = cmsT('cal.listCat', 'ปฏิทินกิจกรรม');
+  const defaultCatLabel = cmsT('cal.listCat', 'ปฏิทินกิจกรรม');
   const listEmpty = cmsT('cal.monthEmpty', 'ยังไม่มีกิจกรรมในเดือนนี้');
+  const attachLabel = cmsT('cal.attachment', 'เอกสารแนบ');
 
   const listHtml = listEvents.length
     ? listEvents.map(ev => {
         const title = cmsL(ev, 'title');
         const meta = fmtEventMeta(ev);
+        const catLabel = cmsL(ev, 'tag') || defaultCatLabel;
         const dayNum = parseInt(ev.date.split('-')[2], 10);
         const mon = fmtMonthName(ev.date);
         const sel = calSelectedISO && eventOnDay(ev, calSelectedISO) ? ' ev-row-highlight' : '';
+        const attach = ev.link
+          ? `<a class="ev-row-attach" href="${ev.link}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">📎 ${attachLabel}</a>`
+          : '';
         const inner = `
           <div class="ev-date-box"><span class="ev-date-day">${dayNum}</span><span class="ev-date-mon">${mon}</span></div>
           <div class="ev-row-body">
             <div class="ev-row-cat">| ${catLabel}</div>
             <div class="ev-row-title">${title}</div>
             <div class="ev-row-meta">${meta}</div>
+            ${attach}
           </div>
           ${chev}`;
         const detailHref = activityDetailHref(ev, 'calendar');
@@ -1169,19 +1198,19 @@ function renderCalendarFromCMS() {
     calViewMonth -= 1;
     if (calViewMonth < 0) { calViewMonth = 11; calViewYear -= 1; }
     calSelectedISO = null;
-    renderCalendarFromCMS();
+    renderCalendarBoard(events);
   });
   root.querySelector('#calNext')?.addEventListener('click', () => {
     calViewMonth += 1;
     if (calViewMonth > 11) { calViewMonth = 0; calViewYear += 1; }
     calSelectedISO = null;
-    renderCalendarFromCMS();
+    renderCalendarBoard(events);
   });
   root.querySelectorAll('.ev-day[data-iso]').forEach(btn => {
     btn.addEventListener('click', () => {
       const iso = btn.dataset.iso;
       calSelectedISO = calSelectedISO === iso ? null : iso;
-      renderCalendarFromCMS();
+      renderCalendarBoard(events);
     });
   });
   root.querySelectorAll('.reveal').forEach(el => ro.observe(el));
