@@ -5,6 +5,22 @@
 
 const CMS_KEY = 'pds_occ_cms';
 
+/* Faculty photo files were renamed from Thai/space names to ASCII slugs
+   (Safari's file:// loader can fail to resolve the old names). Saved
+   localStorage data still holding the old paths gets remapped on load. */
+const PHOTO_PATH_MIGRATIONS = {
+  'assets/img/ผู้บริหาร -โชติวิทย์ ธรรมสุจิตร_08.png': 'assets/img/director-chotiwit.png',
+  'assets/img/ผู้บริหาร-อ.สุนทร ภูรีปรีชาเลิศ_02.png': 'assets/img/deputy-suntorn.png',
+  'assets/img/การงานอาชีพ  - อ.ปรเมษฐ์ คำจร_01.png': 'assets/img/head-parames.png',
+  'assets/img/ผู้บริหาร - อ.กิตติศักดิ์ นิทาน_01.png': 'assets/img/teacher-kittisak.png',
+  'assets/img/การงานอาชีพ - อ.เสกสรรค์ หงษ์หิรัญพันธ์_01.png': 'assets/img/teacher-seksun.png',
+  'assets/img/การงานอาชีพ - อ.ณภัสวรรก์ สุภาแสน_01.png': 'assets/img/teacher-naphaswan.png',
+  'assets/img/การงานอาชีพ-อ.กรวิชญ์ โสภา_02.png': 'assets/img/teacher-kornvich.png',
+  'assets/img/อาจารย์ ดิเรก พรหมสาขา ณ สกลนคร 01.png': 'assets/img/teacher-direk.png',
+  'assets/img/ปริยากร  พรสุทธิพันธุ์ 2.png': 'assets/img/teacher-pariyakorn.png',
+  'assets/img/กิตติญา-removebg-preview.png': 'assets/img/teacher-kittiya.png'
+};
+
 const DEFAULT_DATA = {
   site: {
     name: 'กลุ่มสาระการเรียนรู้การงานอาชีพและเทคโนโลยี',
@@ -462,6 +478,12 @@ const CMS = {
       // Migrate retired FB proxy URL saved in older localStorage
       if (merged.site && merged.site.fb_api_url === 'https://pds-occ-fb-proxy.onrender.com') {
         merged.site.fb_api_url = DEFAULT_DATA.site.fb_api_url;
+      }
+      // Migrate faculty photo paths saved before files were renamed to ASCII names
+      if (Array.isArray(merged.faculty)) {
+        merged.faculty.forEach(f => {
+          if (f.photo && PHOTO_PATH_MIGRATIONS[f.photo]) f.photo = PHOTO_PATH_MIGRATIONS[f.photo];
+        });
       }
       return merged;
     } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
