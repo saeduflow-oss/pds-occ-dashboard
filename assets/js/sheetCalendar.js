@@ -7,20 +7,12 @@
   const SHEET_ID = '1HKQec08ot28d2svlgoE2fQFIMHlzbS7q06aTDwk8mqw';
   const SHEET_TAB = 'events';
   const CACHE_KEY = 'pds_sheet_calendar_cache_v1';
-  const BAR_CLASSES = ['ni-1', 'ni-2', 'ni-3', 'ni-4'];
   const JSONP_TIMEOUT = 10000;
 
   function escapeHtml(s) {
     return String(s || '').replace(/[&<>"']/g, c => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
-  }
-
-  const deptColorMap = new Map();
-  function bgForDept(dept) {
-    if (!dept) return 'ni-1';
-    if (!deptColorMap.has(dept)) deptColorMap.set(dept, BAR_CLASSES[deptColorMap.size % BAR_CLASSES.length]);
-    return deptColorMap.get(dept);
   }
 
   function parseSheetDate(s) {
@@ -32,6 +24,47 @@
 
   function isHttpUrl(s) {
     return /^https?:\/\//i.test((s || '').trim());
+  }
+
+  /* No image column in the sheet, so pick a topic-relevant stock photo
+     by matching keywords in the event title. First match wins, so more
+     specific keywords are listed before general ones. */
+  const IMAGE_KEYWORDS = [
+    [['เทียนพรรษา', 'ทำบุญ', 'ตักบาตร', 'ศาสนา', 'พระ', 'วันพระ', 'วันวิสาขบูชา', 'วันมาฆบูชา', 'วันอาสาฬหบูชา'],
+      'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=700&q=75&fit=crop&auto=format'],
+    [['ทัศนศึกษา', 'ศึกษาดูงาน', 'เข้าค่าย', 'ค่ายพักแรม'],
+      'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=700&q=75&fit=crop&auto=format'],
+    [['กีฬา', 'แข่งขันกีฬา', 'กรีฑา'],
+      'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=700&q=75&fit=crop&auto=format'],
+    [['นักศึกษาวิชาทหาร', 'รด.', 'สวนสนาม'],
+      'https://images.unsplash.com/photo-1547483238-2cbf881a559f?w=700&q=75&fit=crop&auto=format'],
+    [['วิทยาศาสตร์', 'อัจฉริยภาพ', 'สะเต็ม', 'stem'],
+      'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=700&q=75&fit=crop&auto=format'],
+    [['หุ่นยนต์', 'โครงงาน', 'นวัตกรรม', 'สิ่งประดิษฐ์', 'coding', 'โปรแกรม'],
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=75&fit=crop&auto=format'],
+    [['ตรวจสุขภาพ', 'อนามัย', 'สุขภาพ'],
+      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&q=75&fit=crop&auto=format'],
+    [['ตรวจระเบียบ', 'เครื่องแบบ', 'ทรงผม'],
+      'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&q=75&fit=crop&auto=format'],
+    [['สอบ', 'ทดสอบ', 'ประเมิน'],
+      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=75&fit=crop&auto=format'],
+    [['แนะแนว', 'แนะนำ', 'ปรึกษา'],
+      'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=700&q=75&fit=crop&auto=format'],
+    [['ผู้ปกครอง', 'รายงานตัว', 'รับสมัคร', 'ลงทะเบียน', 'สมัคร'],
+      'https://images.unsplash.com/photo-1544531585-9847b68c8c86?w=700&q=75&fit=crop&auto=format'],
+    [['เปิดภาคเรียน', 'เปิดเทอม', 'เปิดปีการศึกษา'],
+      'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&q=75&fit=crop&auto=format'],
+    [['ประชุม', 'สัมมนา', 'อบรม', 'เชิงปฏิบัติการ'],
+      'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=700&q=75&fit=crop&auto=format']
+  ];
+  const DEFAULT_EVENT_IMAGE = 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75&fit=crop&auto=format';
+
+  function pickImageForTitle(title) {
+    const t = (title || '').toLowerCase();
+    for (const [keywords, url] of IMAGE_KEYWORDS) {
+      if (keywords.some(k => t.includes(k.toLowerCase()))) return url;
+    }
+    return DEFAULT_EVENT_IMAGE;
   }
 
   function cellText(cell) {
@@ -78,7 +111,8 @@
         time: escapeHtml(time),
         tag: escapeHtml(dept),
         link: isHttpUrl(attachment) ? attachment.replace(/"/g, '%22') : '',
-        bg: bgForDept(dept)
+        image: pickImageForTitle(title),
+        bg: 'ni-1'
       };
     }).filter(Boolean);
   }
