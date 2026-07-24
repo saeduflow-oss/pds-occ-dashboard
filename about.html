@@ -210,11 +210,11 @@
       .vb-heading { font-size: 1.1rem; }
     }
 
-    /* Mission cards — clean card style matching reference image */
-    .mission-row {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-      padding-bottom: 8px;
-    }
+    .mission-row{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:24px;
+}
     .mission-card {
       background: #ffffff;
       border: 1.5px solid #e8e2f6;
@@ -224,6 +224,7 @@
       transition: all .26s var(--ease);
       box-shadow: 0 4px 24px rgba(105,88,166,.08);
       position: relative; overflow: hidden;
+      height:100%;
     }
     .mission-card::before { display: none; }
     .mission-card::after {
@@ -384,6 +385,23 @@
       .senior-card { width: calc(50% - 12px); }
       .teacher-grid-new { grid-template-columns: repeat(2, 1fr); }
     }
+    .tc-info {
+    padding: 12px 14px 16px;
+}
+
+.tc-badge {
+    display: inline-block;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #6958a6;
+    background: #f0edfb;
+    border: 1px solid #ddd8f0;
+    border-radius: var(--r-pill);
+    padding: 3px 10px;
+    margin-bottom: 6px;
+}
   </style>
 </head>
 <body>
@@ -485,13 +503,10 @@
     <div class="phil-badge" data-i18n="about.phil.badge">ปรัชญา · Philosophy</div>
     <span class="phil-quote-mark" aria-hidden="true">"</span>
     <p class="phil-text" data-i18n-html="about.phil.text">
-      <em>ความรู้และทักษะในงาน</em> สร้างเสริมประสบการณ์<em>ทักษะชีวิต</em>
+      <em>คการศึกษาและเทคโนโลยี</em> ก่อเกิดนวัตกรรม<em>ทางปัญญา</em>
     </p>
     <div class="phil-rule"></div>
-    <p class="phil-sub" data-i18n="about.phil.sub">
-      กลุ่มสาระเทคโนโลยีเชื่อมั่นว่า การเรียนรู้ที่มีคุณภาพต้องเชื่อมโยงทั้งความรู้เชิงวิชาการ
-      และประสบการณ์จริง เพื่อสร้างผู้เรียนที่มีทักษะพร้อมสำหรับโลกยุคใหม่
-    </p>
+    
   </div>
 </div>
 
@@ -503,99 +518,149 @@
     <span class="vb-label" data-i18n="about.vision.label">วิสัยทัศน์</span>
     <div class="vb-divider"></div>
     <div class="vb-text-wrap">
-      <h3 class="vb-heading" data-i18n="about.vision.text">เป็นแหล่งเรียนรู้วิชาการ และฝึกฝนประสบการณ์วิชาอาชีพ เพื่อส่งเสริมพัฒนาการทักษะ
-และแสวงหาความก้าวหน้าตามความสันทัดส่วนตน อย่างคนมีศักยภาพ</h3>
+      <h3 class="vb-heading" data-i18n="about.vision.text">เป็นแหล่งเรียนรู้ทางด้านคอมพิวเตอร์ เทคโนโลยีดิจิทัล และการสร้างนวัตกรรมที่ตอบสนอง
+ความต้องการของสังคมที่เปลี่ยนแปลงไปอย่างรวดเร็ว</h3>
     </div>
   </div>
 </div>
-
-<!-- MISSION: 4 cards -->
+<!-- MISSION: 5 cards -->
 <div class="vm-section vm-mission-only" id="mission">
   <div class="vm-inner">
+
     <div class="mission-section-head reveal">
-      <span class="mission-section-eyebrow" data-i18n="about.mission.eyebrow">Mission</span>
-      <span class="mission-section-label" data-i18n="about.mission.label">พันธกิจ</span>
+      <span class="mission-section-eyebrow">Mission</span>
+      <span class="mission-section-label">พันธกิจ</span>
     </div>
+
     <div class="mission-row reveal">
 
-      <!-- Card 1: ส่งเสริมทักษะชีวิต -->
+      <!-- Card 1 -->
       <div class="mission-card">
         <div class="mc-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+          <!-- Technology + Student -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#ig1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
             <defs>
               <linearGradient id="ig1" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#6958a6"/>
                 <stop offset="100%" stop-color="#c784b7"/>
               </linearGradient>
             </defs>
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="url(#ig1)" stroke-width="1.5"/>
-            <circle cx="9" cy="7" r="4" stroke="url(#ig1)" stroke-width="1.5"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="url(#ig1)" stroke-width="1.5"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="url(#ig1)" stroke-width="1.5"/>
+            <rect x="4" y="4" width="16" height="12" rx="2"/>
+            <path d="M9 20h6M12 16v4"/>
           </svg>
         </div>
-        <div class="mc-title" data-i18n="about.mc1.title">ส่งเสริมทักษะชีวิต</div>
-        <p class="mc-text" data-i18n="about.mc1.text">พัฒนาทักษะที่จำเป็นสำหรับการดำรงชีวิตในโลกยุคใหม่อย่างมีประสิทธิภาพ</p>
+
+        <div class="mc-title">
+          พัฒนาศักยภาพผู้เรียน
+        </div>
+
+        <p class="mc-text">
+          พัฒนาและส่งเสริมผู้เรียนให้มีทักษะด้านเทคโนโลยี ควบคู่คุณธรรม จริยธรรม และคุณลักษณะที่พึงประสงค์
+        </p>
       </div>
 
-      <!-- Card 2: พัฒนาทักษะอาชีพ -->
+      <!-- Card 2 -->
       <div class="mission-card">
         <div class="mc-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+          <!-- Innovation -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#ig2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
             <defs>
               <linearGradient id="ig2" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#6958a6"/>
                 <stop offset="100%" stop-color="#c784b7"/>
               </linearGradient>
             </defs>
-            <rect x="2" y="7" width="20" height="14" rx="2" stroke="url(#ig2)" stroke-width="1.5"/>
-            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="url(#ig2)" stroke-width="1.5"/>
-            <line x1="12" y1="12" x2="12" y2="16" stroke="url(#ig2)" stroke-width="1.5"/>
-            <line x1="10" y1="14" x2="14" y2="14" stroke="url(#ig2)" stroke-width="1.5"/>
+            <path d="M12 2a6 6 0 0 0-3 11v3h6v-3a6 6 0 0 0-3-11z"/>
+            <path d="M9 20h6M10 17h4"/>
           </svg>
         </div>
-        <div class="mc-title" data-i18n="about.mc2.title">พัฒนาทักษะอาชีพ</div>
-        <p class="mc-text" data-i18n="about.mc2.text">เสริมสร้างความรู้และทักษะด้านการประกอบอาชีพในสาขาที่หลากหลาย</p>
+
+        <div class="mc-title">
+          นวัตกรรมและการวิจัย
+        </div>
+
+        <p class="mc-text">
+          พัฒนานวัตกรรมทางการศึกษาและกระบวนการเรียนรู้ที่สร้างองค์ความรู้และปัญญาบนฐานการวิจัย
+        </p>
       </div>
 
-      <!-- Card 3: เทคโนโลยีดิจิทัล -->
+      <!-- Card 3 -->
       <div class="mission-card">
         <div class="mc-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+          <!-- Curriculum -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#ig3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
             <defs>
               <linearGradient id="ig3" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#6958a6"/>
                 <stop offset="100%" stop-color="#c784b7"/>
               </linearGradient>
             </defs>
-            <polyline points="16 18 22 12 16 6" stroke="url(#ig3)" stroke-width="1.5"/>
-            <polyline points="8 6 2 12 8 18" stroke="url(#ig3)" stroke-width="1.5"/>
-            <path d="M14 4l-4 16" stroke="url(#ig3)" stroke-width="1.5"/>
+            <path d="M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 0-3 3z"/>
+            <path d="M5 3v18"/>
           </svg>
         </div>
-        <div class="mc-title" data-i18n="about.mc3.title">เทคโนโลยีดิจิทัล</div>
-        <p class="mc-text" data-i18n="about.mc3.text">ฝึกทักษะด้านเทคโนโลยีสารสนเทศและดิจิทัล เพื่อรับมือโลกอนาคต</p>
+
+        <div class="mc-title">
+          หลักสูตรทันสมัย
+        </div>
+
+        <p class="mc-text">
+          พัฒนาหลักสูตรที่ทันสมัย ยืดหยุ่น และสอดคล้องกับการเปลี่ยนแปลงของสังคมและเทคโนโลยี
+        </p>
       </div>
 
-      <!-- Card 4: เสริมสร้างศักยภาพ -->
+      <!-- Card 4 -->
       <div class="mission-card">
         <div class="mc-icon-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+          <!-- Teacher -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#ig4)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
             <defs>
               <linearGradient id="ig4" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#6958a6"/>
                 <stop offset="100%" stop-color="#c784b7"/>
               </linearGradient>
             </defs>
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="url(#ig4)" stroke-width="1.5"/>
+            <path d="M12 3l9 4-9 4-9-4 9-4z"/>
+            <path d="M7 10v4c0 2 2 4 5 4s5-2 5-4v-4"/>
           </svg>
         </div>
-        <div class="mc-title" data-i18n="about.mc4.title">เสริมสร้างศักยภาพ</div>
-        <p class="mc-text" data-i18n="about.mc4.text">พัฒนาผู้เรียนให้มีศักยภาพและค้นพบความถนัดตามความสนใจส่วนตน</p>
+
+        <div class="mc-title">
+          พัฒนาวิชาชีพครู
+        </div>
+
+        <p class="mc-text">
+          สนับสนุนการฝึกประสบการณ์วิชาชีพครูและพัฒนาบุคลากรทางการศึกษาให้มีคุณภาพตามมาตรฐานวิชาชีพ
+        </p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="mission-card">
+        <div class="mc-icon-wrap">
+          <!-- Community -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="url(#ig5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+            <defs>
+              <linearGradient id="ig5" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6958a6"/>
+                <stop offset="100%" stop-color="#c784b7"/>
+              </linearGradient>
+            </defs>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M16 8h6M19 5v6"/>
+          </svg>
+        </div>
+
+        <div class="mc-title">
+          บริการวิชาการสู่ชุมชน
+        </div>
+
+        <p class="mc-text">
+          สนับสนุนการบริการวิชาการด้านเทคโนโลยีเพื่อพัฒนาวิชาชีพครู สถานศึกษา และชุมชนอย่างยั่งยืน
+        </p>
       </div>
 
     </div>
-
   </div>
 </div>
 
@@ -719,7 +784,7 @@
         <div class="tc-photo"><img src="assets/img/teacher-kittiya.png" alt="อาจารย์กิตติญา กูลดี"></div>
         <div class="tc-info">
           <div class="tc-name-new">อาจารย์กิตติญา กูลดี</div>
-          <a href="mailto:kittiya@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>kittiya@pds.ac.th</a>
+          <a href="mailto:kittiya@pds.ac.th" class="fc-email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>kittiya.kul@satitpatumwan.ac.th</a>
         </div>
       </div>
     </div>
@@ -733,6 +798,6 @@
 </footer>
 <script src="assets/js/cms.js?v=36"></script>
 <script src="assets/js/i18n.js"></script>
-<script src="assets/js/script.js?v=43"></script>
+<script src="assets/js/script.js?v=44"></script>
 </body>
 </html>

@@ -949,7 +949,6 @@ let calViewYear = null;
 let calViewMonth = null;
 let calSelectedISO = null;
 
-const CAL_BAR = { 'ni-1': '#6958a6', 'ni-2': '#8b7fd4', 'ni-3': '#c784b7', 'ni-4': '#252048' };
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 function isoDate(y, m, d) { return `${y}-${pad2(m + 1)}-${pad2(d)}`; }
@@ -1005,6 +1004,56 @@ function fmtEventMeta(ev) {
 function truncate(s, n) {
   const t = (s || '').trim();
   return t.length > n ? t.slice(0, n - 1) + '…' : t;
+}
+
+/* ── Calendar event categorization: keyword → {category, icon} ──
+   Category drives the chip color (4-hue system), icon is picked per-keyword
+   so visually similar events (พิธี, อบรม, ทัศนศึกษา, …) are easy to tell apart at a glance. */
+const CAL_CATS = {
+  project:  { cls: 'cat-purple', label: 'โครงการ/กิจกรรม' },
+  ceremony: { cls: 'cat-pink',   label: 'พิธีการ/งานสำคัญ' },
+  training: { cls: 'cat-blue',   label: 'อบรม/ทัศนศึกษา' },
+  student:  { cls: 'cat-green',  label: 'กิจกรรมนักเรียน' }
+};
+const CAL_RULES = [
+  { re: /พิธี/,        cat: 'ceremony', icon: 'star' },
+  { re: /วัคซีน/,      cat: 'ceremony', icon: 'health' },
+  { re: /สอบ/,         cat: 'ceremony', icon: 'pencil' },
+  { re: /ทัศนศึกษา/,   cat: 'training', icon: 'pin' },
+  { re: /ตรวจ/,        cat: 'training', icon: 'check' },
+  { re: /อบรม/,        cat: 'training', icon: 'cap' },
+  { re: /ประชุม/,      cat: 'project',  icon: 'users' },
+  { re: /รับสมัคร/,    cat: 'project',  icon: 'megaphone' },
+  { re: /มอบ/,         cat: 'project',  icon: 'gift' },
+  { re: /โครงการ/,     cat: 'project',  icon: 'book' },
+  { re: /กิจกรรม/,     cat: 'student',  icon: 'sparkle' }
+];
+const CAL_ICON_PATHS = {
+  book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v16H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 4.5v16"/>',
+  gift: '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+  star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  health: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>',
+  users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  cap: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/>',
+  check: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  sparkle: '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>',
+  megaphone: '<path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a4 4 0 0 1 0 8"/><path d="M19 5a8 8 0 0 1 0 14"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'
+};
+
+function classifyEvent(ev) {
+  const title = cmsL(ev, 'title') || ev.title || '';
+  for (const rule of CAL_RULES) {
+    if (rule.re.test(title)) return { cat: rule.cat, icon: rule.icon };
+  }
+  return { cat: 'project', icon: 'calendar' };
+}
+
+function calIconSvg(name, cls) {
+  const d = CAL_ICON_PATHS[name] || CAL_ICON_PATHS.calendar;
+  return `<svg class="${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 }
 
 function buildCalWeeks(y, m, daysInMonth, startDow, prevMonthDays) {
@@ -1066,6 +1115,26 @@ function weekEventSegments(events, weekDays) {
   return segments;
 }
 
+const CAL_MAX_LANES = 3;
+
+function packLanes(segments, maxLanes) {
+  const sorted = segments.slice().sort((a, b) => a.colStart - b.colStart || (a.colEnd - a.colStart) - (b.colEnd - b.colStart));
+  const laneEnds = [];
+  const laned = [];
+  let overflowCount = 0;
+  sorted.forEach(seg => {
+    let lane = laneEnds.findIndex(end => end < seg.colStart);
+    if (lane === -1) lane = laneEnds.length;
+    if (lane < maxLanes) {
+      laneEnds[lane] = seg.colEnd;
+      laned.push({ ...seg, lane });
+    } else {
+      overflowCount++;
+    }
+  });
+  return { laned, overflowCount };
+}
+
 function renderCalendarFromCMS() {
   const root = document.getElementById('calendarRoot');
   if (!root || typeof SheetCalendar === 'undefined') return;
@@ -1100,7 +1169,7 @@ function renderCalendarBoard(events) {
   const weeks = buildCalWeeks(y, m, daysInMonth, startDow, prevMonthDays);
 
   const weeksHtml = weeks.map(weekDays => {
-    const daysHtml = weekDays.map(d => {
+    const daysHtml = weekDays.map((d, i) => {
       const hasEv = events.some(ev => eventOnDay(ev, d.iso));
       const dayCls = [
         'ev-day',
@@ -1109,33 +1178,42 @@ function renderCalendarBoard(events) {
         d.iso === calSelectedISO ? 'ev-selected' : '',
         hasEv ? 'ev-has' : ''
       ].filter(Boolean).join(' ');
+      const numCls = [
+        'ev-day-num',
+        i === 0 ? 'ev-day-num--sun' : '',
+        i === 6 ? 'ev-day-num--sat' : ''
+      ].filter(Boolean).join(' ');
       if (d.inMonth) {
-        return `<button type="button" class="${dayCls}" data-iso="${d.iso}"><span class="ev-day-num">${d.day}</span></button>`;
+        return `<button type="button" class="${dayCls}" data-iso="${d.iso}"><span class="${numCls}">${d.day}</span></button>`;
       }
-      return `<div class="${dayCls}"><span class="ev-day-num">${d.day}</span></div>`;
+      return `<div class="${dayCls}"><span class="${numCls}">${d.day}</span></div>`;
     }).join('');
 
     const segments = weekEventSegments(events, weekDays);
-    const barsHtml = segments.map(seg => {
-      const color = CAL_BAR[seg.ev.bg] || CAL_BAR['ni-1'];
+    const { laned, overflowCount } = packLanes(segments, CAL_MAX_LANES);
+    const barsHtml = laned.map(seg => {
+      const cols = seg.colEnd - seg.colStart + 1;
+      const { cat, icon } = classifyEvent(seg.ev);
+      const isBanner = cols >= 4;
       const spanCls = [
         'ev-span-bar',
+        CAL_CATS[cat].cls,
+        isBanner ? 'ev-span-bar--banner' : '',
         seg.continuesBefore ? 'ev-span-bar--before' : 'ev-span-bar--start',
         seg.continuesAfter ? 'ev-span-bar--after' : 'ev-span-bar--end'
-      ].join(' ');
-      const cols = seg.colEnd - seg.colStart + 1;
+      ].filter(Boolean).join(' ');
       const maxLen = cols * 14;
       const label = cols >= 3 ? seg.title : truncate(seg.title, Math.max(8, maxLen));
       const titleAttr = seg.title.replace(/"/g, '&quot;');
       const detailHref = activityDetailHref(seg.ev, 'calendar');
-      return `<a class="${spanCls}" href="${detailHref}" style="grid-column:${seg.colStart + 1} / ${seg.colEnd + 2};background:${color}" title="${titleAttr}">${label}</a>`;
+      const iconHtml = calIconSvg(icon, 'ev-span-bar-icon');
+      return `<a class="${spanCls}" href="${detailHref}" style="grid-column:${seg.colStart + 1} / ${seg.colEnd + 2};grid-row:${seg.lane + 1}" title="${titleAttr}">${iconHtml}<span class="ev-span-bar-label">${label}</span></a>`;
     }).join('');
+    const moreHtml = overflowCount > 0
+      ? `<a href="#calEvList" class="ev-week-more" style="grid-row:${CAL_MAX_LANES + 1}" onclick="document.getElementById('calEvList')?.scrollIntoView({behavior:'smooth',block:'start'})">+${overflowCount} ${cmsT('cal.more', 'กิจกรรมเพิ่มเติม')}</a>`
+      : '';
 
-    const barLane = segments.length
-      ? `<div class="ev-week-bars">${barsHtml}</div>`
-      : `<div class="ev-week-bars ev-week-bars--empty"></div>`;
-
-    return `<div class="ev-week"><div class="ev-week-days">${daysHtml}</div>${barLane}</div>`;
+    return `<div class="ev-week"><div class="ev-week-days">${daysHtml}</div><div class="ev-week-bars">${barsHtml}${moreHtml}</div></div>`;
   }).join('');
 
   const monthStart = isoDate(y, m, 1);
@@ -1165,10 +1243,11 @@ function renderCalendarBoard(events) {
         const attach = ev.link
           ? `<a class="ev-row-attach" href="${ev.link}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">📎 ${attachLabel}</a>`
           : '';
+        const { cat } = classifyEvent(ev);
         const inner = `
           <div class="ev-date-box"><span class="ev-date-day">${dayNum}</span><span class="ev-date-mon">${mon}</span></div>
           <div class="ev-row-body">
-            <div class="ev-row-cat">| ${catLabel}</div>
+            <div class="ev-row-cat ${CAL_CATS[cat].cls}-pale">${catLabel}</div>
             <div class="ev-row-title">${title}</div>
             <div class="ev-row-meta">${meta}</div>
             ${attach}
@@ -1179,18 +1258,30 @@ function renderCalendarBoard(events) {
       }).join('')
     : `<p class="ev-list-empty">${listEmpty}</p>`;
 
+  const calSvg = calIconSvg('calendar', 'ev-cal-title-icon');
+  const chevPrev = `<svg class="ev-cal-nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>`;
+  const chevNext = `<svg class="ev-cal-nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>`;
+  const legendHtml = Object.values(CAL_CATS).map(c =>
+    `<span class="ev-legend-item"><span class="ev-legend-dot ${c.cls}"></span>${c.label}</span>`
+  ).join('');
+  const resetActive = calSelectedISO ? '' : ' is-disabled';
+
   root.innerHTML = `
     <div class="ev-cal-board reveal">
       <div class="ev-cal-nav">
-        <button type="button" class="ev-cal-nav-btn" id="calPrev">${cmsT('cal.prev', 'เดือนก่อนหน้า')}</button>
-        <h2 class="ev-cal-month">${fmtMonthYearLabel(y, m)}</h2>
-        <button type="button" class="ev-cal-nav-btn" id="calNext">${cmsT('cal.next', 'เดือนถัดไป')}</button>
+        <button type="button" class="ev-cal-nav-btn" id="calPrev">${chevPrev}${cmsT('cal.prev', 'เดือนก่อนหน้า')}</button>
+        <h2 class="ev-cal-month">${calSvg}${fmtMonthYearLabel(y, m)}</h2>
+        <button type="button" class="ev-cal-nav-btn" id="calNext">${cmsT('cal.next', 'เดือนถัดไป')}${chevNext}</button>
       </div>
       <div class="ev-cal-weekdays">${dayLabels.map(d => `<span>${d.trim()}</span>`).join('')}</div>
       <div class="ev-cal-weeks">${weeksHtml}</div>
+      <div class="ev-cal-legend">${legendHtml}</div>
     </div>
-    <div class="ev-list-wrap reveal">
-      <h3 class="ev-list-heading">${cmsT('cal.listTitle', 'รายการกิจกรรม')}</h3>
+    <div class="ev-list-wrap reveal" id="calEvList">
+      <div class="ev-list-head">
+        <h3 class="ev-list-heading">${calIconSvg('calendar', 'ev-list-heading-icon')}${cmsT('cal.listTitle', 'รายการกิจกรรม')}</h3>
+        <button type="button" class="ev-list-reset${resetActive}" id="calReset">${cmsT('cal.showAll', 'ดูทุกกิจกรรม')} →</button>
+      </div>
       <div class="ev-list">${listHtml}</div>
     </div>`;
 
@@ -1203,6 +1294,11 @@ function renderCalendarBoard(events) {
   root.querySelector('#calNext')?.addEventListener('click', () => {
     calViewMonth += 1;
     if (calViewMonth > 11) { calViewMonth = 0; calViewYear += 1; }
+    calSelectedISO = null;
+    renderCalendarBoard(events);
+  });
+  root.querySelector('#calReset')?.addEventListener('click', () => {
+    if (!calSelectedISO) return;
     calSelectedISO = null;
     renderCalendarBoard(events);
   });
