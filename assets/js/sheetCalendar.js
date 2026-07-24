@@ -30,11 +30,11 @@
      by matching keywords in the event title. First match wins, so more
      specific keywords are listed before general ones. */
   const IMAGE_KEYWORDS = [
-    [['เทียนพรรษา', 'ทำบุญ', 'ตักบาตร', 'ศาสนา', 'พระ', 'วันพระ', 'วันวิสาขบูชา', 'วันมาฆบูชา', 'วันอาสาฬหบูชา'],
+    [['เทียนพรรษา', 'ทำบุญ', 'ตักบาตร', 'ศาสนา', 'วันวิสาขบูชา', 'วันมาฆบูชา', 'วันอาสาฬหบูชา', 'เข้าพรรษา', 'ไหว้ครู'],
       'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=700&q=75&fit=crop&auto=format'],
     [['ทัศนศึกษา', 'ศึกษาดูงาน', 'เข้าค่าย', 'ค่ายพักแรม'],
       'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=700&q=75&fit=crop&auto=format'],
-    [['กีฬา', 'แข่งขันกีฬา', 'กรีฑา'],
+    [['กีฬา', 'แข่งขันกีฬา', 'กรีฑา', 'ฟุตบอล', 'เปตอง', 'บาสเกตบอล'],
       'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=700&q=75&fit=crop&auto=format'],
     [['นักศึกษาวิชาทหาร', 'รด.', 'สวนสนาม'],
       'https://images.unsplash.com/photo-1547483238-2cbf881a559f?w=700&q=75&fit=crop&auto=format'],
@@ -42,7 +42,7 @@
       'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=700&q=75&fit=crop&auto=format'],
     [['หุ่นยนต์', 'โครงงาน', 'นวัตกรรม', 'สิ่งประดิษฐ์', 'coding', 'โปรแกรม'],
       'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=75&fit=crop&auto=format'],
-    [['ตรวจสุขภาพ', 'อนามัย', 'สุขภาพ'],
+    [['ตรวจสุขภาพ', 'อนามัย', 'สุขภาพ', 'วัคซีน'],
       'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&q=75&fit=crop&auto=format'],
     [['ตรวจระเบียบ', 'เครื่องแบบ', 'ทรงผม'],
       'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&q=75&fit=crop&auto=format'],
